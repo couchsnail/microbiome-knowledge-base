@@ -21,9 +21,24 @@
         <h1>Microbiome Data Upload</h1>
         <p>You can upload a csv file and view the columns and data appropriately.</p>
 
-        <button>
-            Upload CSV
-        </button>
+        <label for="myfile">Upload a CSV file:</label>
+        <input type="file" id="myfile" name="myfile" accept=".csv" required>
+
+        <div>
+            <button type="submit" id="submit-file" >Upload File</button>
+        </div>
+
+        <div id="pagination">
+            <label for="studiesPerPage">Studies Per Page:</label>
+            <select id="studiesPerPage">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+
+        <!--Actually probably make it a series of checkboxes for which columns they want displayed-->
     </body>
 </html>
 

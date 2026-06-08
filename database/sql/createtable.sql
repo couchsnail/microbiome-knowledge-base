@@ -14,7 +14,7 @@ CREATE TABLE if not exists data(
     culture_collection TEXT,
     specimen_voucher TEXT,
     collected_by TEXT NOT NULL, 
-    collection_date TEXT, 
+    collection_date YEAR(4) NOT NULL,
     country TEXT, 
     host TEXT NOT NULL, 
     identified_by TEXT,
