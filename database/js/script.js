@@ -80,9 +80,19 @@ function displayHTML(result)
     let col = result.schema.fields.length;
     let columns = result.schema.fields.map(f => f.name);
 
+    let thead = document.getElementById("header_row");
+    thead.innerHTML = "";
+    for(let i = 0; i < col; i++)
+    {
+        thead.insertAdjacentHTML("beforeend", "<th>" + columns[i] + "</th>");
+    }
+
+    //console.log(columns, Object.keys(data[0].toJSON()));
+
     for(let r = 0; r < len; r++)
     {
         let row = data[r].toJSON();
+        //if(r === 0) console.log(Object.keys(row));
         //console.log(row);
 
         let rowHTML = ""; 
