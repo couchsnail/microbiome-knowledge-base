@@ -5,8 +5,12 @@
         <meta name="author" content="Amelie Sicat">
         <meta name="description" content="Website Code for storing Microbiome Data">
 
-        <!--Local scripts-->
-        <script type="text/javascript" src="js/about.js"></script>
+        <!--Local scripts; if commented out not necessary since I took this template from an older project-->
+        <!--<script type="text/javascript" src="js/about.js"></script>-->
+        <!--<script src="script.js"></script>-->
+        <script type="module" src="js/script.js"></script>
+        <!--For parsing CSV files-->
+        <!--<script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>-->
 
         <!--stylesheets-->
         <!--NOTE: Will add bootstrap to add other buttons and other fun things later-->
@@ -21,14 +25,17 @@
         <h1>Microbiome Data Upload</h1>
         <p>You can upload a csv file and view the columns and data appropriately.</p>
 
-        <label for="myfile">Upload a CSV file:</label>
-        <input type="file" id="myfile" name="myfile" accept=".csv" required>
+        <form>
+            <label for="myfile">Upload a CSV file:</label>
+            <input type="file" id="myfile" name="myfile" accept=".csv" required>
 
-        <div>
-            <button type="submit" id="submit-file" >Upload File</button>
-        </div>
-
-        <div id="pagination">
+            <div>
+                <button type="submit" id="submit-file" >Upload File</button>
+            </div>
+        </form>
+        
+        <!--Pagination saved for later since it's overcomplicating things right now-->
+        <!--<div id="pagination">
             <label for="studiesPerPage">Studies Per Page:</label>
             <select id="studiesPerPage">
                 <option value="10">10</option>
@@ -36,9 +43,12 @@
                 <option value="50">50</option>
                 <option value="100">100</option>
             </select>
-        </div>
+        </div>-->
+
+        <!--<div id="search by custom attributes"-->
 
         <!--Actually probably make it a series of checkboxes for which columns they want displayed-->
+        <!--Which doesn't actually require SQL, you can just hide them entirely from HTML LOL-->
     </body>
 </html>
 

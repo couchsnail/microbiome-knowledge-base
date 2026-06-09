@@ -1,4 +1,6 @@
-CREATE TABLE if not exists data(
+DROP TABLE IF EXISTS micro_data; 
+
+CREATE TABLE IF NOT EXISTS micro_data(
     id INTEGER NOT NULL AUTO_INCREMENT,
     source_study VARCHAR(20) NOT NULL UNIQUE,
     accession VARCHAR(20) NOT NULL,
@@ -35,6 +37,6 @@ CREATE TABLE if not exists data(
     cell_line TEXT, 
     serotype TEXT, 
     serovar TEXT, 
-    custom_attributes TEXT, 
+    custom_attributes JSON NOT NULL, 
     PRIMARY KEY(id);
 );
