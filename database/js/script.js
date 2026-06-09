@@ -32,6 +32,7 @@ form.addEventListener("submit", async e => {
     //Documentation: https://duckdb.org/docs/current/clients/wasm/data_ingestion
     if(file)
     {
+        //This part turns the csv into the DuckDB table
         await db.registerFileHandle('microdata.csv', file, duckdb.DuckDBDataProtocol.BROWSER_FILEREADER, true);
 
         const conn = await db.connect();
@@ -41,9 +42,16 @@ form.addEventListener("submit", async e => {
         await conn.query(`CREATE TABLE IF NOT EXISTS micro_data AS SELECT * FROM 'microdata.csv';`);
 
         const result = await conn.query('SELECT * FROM micro_data LIMIT 10;');
-        console.log(result.toArray().map(row => row.toJSON()));
+
+        //console.log(result.toArray().map(row => row.toJSON())[1]);
+
+        displayHTML(result);
 
         await conn.close();
+
+        //This is the part where we add it to the table repeatedly
+        //Via for-loop
+        //There is probably an easier and nicer way to do this
     }
     else
     {
@@ -52,20 +60,41 @@ form.addEventListener("submit", async e => {
     //form.reset();
 })
 
-function loadDatabase(data) 
+function displayHTML(result)
 {
-    //Parse CSV data and call SQL function database updating
-    //I should probably make the DuckDB code first
-    //Make sure table isn't visible at first
-
-    //But when that uploadButton is pressed:
-    //Drop any tables if they exist
-    //Call the parseCSV function
-    //Which parses the CSV data then inputs it into the table
-
+    const data = result.toArray();
     let len = data.length;
-    for(let i = 0; i < len; i++)
+
+    if(len == 0)
     {
-        
+        console.log("CSV empty"); 
+        return; 
+    }
+    
+    let bioBody = document.getElementById("micro_table_body")
+
+    //Clears table if anything was already uploaded
+    bioBody.innerHTML = ""; 
+
+    //Documentation for schema: https://github.com/apache/arrow/blob/478286658/js/src/schema.ts#L47
+    let col = result.schema.fields.length;
+    let columns = result.schema.fields.map(f => f.name);
+
+    for(let r = 0; r < len; r++)
+    {
+        let row = data[r].toJSON();
+        //console.log(row);
+
+        let rowHTML = ""; 
+
+        rowHTML += "<tr>";
+
+        for(let c = 0; c < col; c++)
+        {
+            rowHTML += "<td>" + row[columns[c]] + "</td>";
+        }
+
+        rowHTML +="</tr>";
+        bioBody.insertAdjacentHTML("beforeend", rowHTML);
     }
 }
