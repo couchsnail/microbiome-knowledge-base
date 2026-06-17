@@ -41,6 +41,17 @@ form.addEventListener("submit", async e => {
         await conn.query(`DROP TABLE IF EXISTS micro_data;`)
         await conn.query(`CREATE TABLE IF NOT EXISTS micro_data AS SELECT * FROM 'microdata.csv';`);
 
+        //For pagination
+        /*
+        let studiesPerPage = parseInt(getParameterByName('studiesPerPage'), 10)
+        if(isNaN(studiesPerPage))
+            studiesPerPage = 10; //default
+        let pageNumber = parseInt(getParameterByName('page'), 10)
+        if(isNaN(pageNumber))
+            pageNumber = 1; //default*/
+
+        //const result = loadStudies(studiesPerPage);
+
         const result = await conn.query('SELECT * FROM micro_data LIMIT 10;');
 
         //console.log(result.toArray().map(row => row.toJSON())[1]);
@@ -59,6 +70,12 @@ form.addEventListener("submit", async e => {
     }
     //form.reset();
 })
+
+function loadStudies(studiesPerPage)
+{
+    let result = conn.query('SELECT * FROM micro_data LIMIT ' + studiesPerPage + ';');
+    return result;
+}
 
 function displayHTML(result)
 {
