@@ -52,7 +52,7 @@ form.addEventListener("submit", async e => {
 
         //const result = loadStudies(studiesPerPage);
 
-        const result = await conn.query('SELECT * FROM micro_data LIMIT 10;');
+        const result = await conn.query('SELECT * FROM micro_data LIMIT 100;');
 
         //console.log(result.toArray().map(row => row.toJSON())[1]);
 
@@ -71,11 +71,48 @@ form.addEventListener("submit", async e => {
     //form.reset();
 })
 
-function loadStudies(studiesPerPage)
+//Full-text search which I may need later
+//https://duckdb.org/docs/current/guides/sql_features/full_text_search
+document.getElementById("custom_attribute_search_form").addEventListener("submit", async(e) =>
 {
-    let result = conn.query('SELECT * FROM micro_data LIMIT ' + studiesPerPage + ';');
-    return result;
-}
+    e.preventDefault(); //not sure if I need this line
+    //ideally let it filter stuff without having to do GETs
+    //Oh and uhhh customize the "filter form" stuff so I don't have to keep making separate functions idk
+    console.log("Custom attribute search");
+    let customAttributes = document.getElementById("customAttribute").value;
+    console.log("Custom attribute: " + customAttributes); 
+
+    //Test if string is empty
+    if(customAttributes == "")
+    {
+        console.log("Empty");
+        alert("Please enter a custom attribute to search for.");
+        return;
+    }
+
+    const conn = await db.connect();
+
+    const data = await conn.query("SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_name = 'micro_data'");
+    const count = data.toArray()[0].count;
+    if(count == 0)
+    {
+        alert("Please upload CSV file first.");
+        await conn.close();
+        return;
+    }
+
+
+    //Note: Need to error check for if they try to search and the table is empty
+
+    let query_string = "SELECT * FROM micro_data WHERE custom_attributes LIKE '%" + customAttributes + "%'";
+    let result = await conn.query(query_string);
+
+    console.log(result.toArray().map(row => row.toJSON())[1]);
+
+    displayHTML(result);
+
+    await conn.close(); 
+})
 
 function displayHTML(result)
 {
@@ -85,6 +122,7 @@ function displayHTML(result)
     if(len == 0)
     {
         console.log("CSV empty"); 
+        alert("No CSV data found");
         return; 
     }
     

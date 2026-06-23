@@ -36,7 +36,7 @@
         
         <!--Pagination saved for later since it's overcomplicating things right now-->
         <!--For pagination; not functional right now-->
-        <div id="pagination">
+        <!--<div id="pagination">
             <label for="studiesPerPage">Studies Per Page:</label>
             <select id="studiesPerPage">
                 <option value="10">10</option>
@@ -44,15 +44,14 @@
                 <option value="50">50</option>
                 <option value="100">100</option>
             </select>
-        </div>
+        </div>-->
 
         <!--<div id="search by custom attributes"-->
-        <label><b>Filter by Custom Attributes</b></label>
-        <label for="custom attribute search" id="autocomplete" placeholder="" 
-                    class="autocomplete-searchbox form-control" type="text">
-            <input name="customAttribute" placeholder="" type="text">
-        </label>
-        <input type="submit" value="Search">
+        <form id="custom_attribute_search_form">
+            <label><b>Filter by Custom Attributes</b></label>
+            <input name="customAttribute" id="customAttribute" placeholder="" type="text">
+            <input type="submit" id="customSearchSubmit" value="Search">
+        </form>
 
         <!--Actually probably make it a series of checkboxes for which columns they want displayed-->
         <!--Which doesn't actually require SQL, you can just hide them entirely from HTML LOL-->
@@ -103,10 +102,10 @@
         </table>
 
         <!--For pagination; not functional right now-->
-        <div class="text-center">
+        <!--<div class="text-center">
             <button class="btn btn-outline-secondary" id="prevPageTop" type="button">Previous</button>
             <button class="btn btn-outline-secondary" id="nextPageTop" type="button">Next</button>
-        </div>
+        </div>-->
 
     </body>
 </html>
