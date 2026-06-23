@@ -46,12 +46,14 @@
             </select>
         </div>-->
 
-        <!--<div id="search by custom attributes"-->
-        <form id="custom_attribute_search_form">
-            <label><b>Filter by Custom Attributes</b></label>
-            <input name="customAttribute" id="customAttribute" placeholder="" type="text">
-            <input type="submit" id="customSearchSubmit" value="Search">
-        </form>
+        <div id = "custom_attribute_search">
+            <form id="custom_attribute_search_form">
+                <label><b>Filter by Custom Attributes</b></label>
+                <input name="customAttribute" id="customAttribute" placeholder="" type="text">
+                <input type="submit" id="customSearchSubmit" value="Search">
+            </form> 
+            <p id="searchResults" style="display: none;"><span id="numberStudies">0</span> studies found </p>
+        </div>
 
         <!--Actually probably make it a series of checkboxes for which columns they want displayed-->
         <!--Which doesn't actually require SQL, you can just hide them entirely from HTML LOL-->

@@ -57,6 +57,7 @@ form.addEventListener("submit", async e => {
         //console.log(result.toArray().map(row => row.toJSON())[1]);
 
         displayHTML(result);
+        document.getElementById("searchResults").style.display = "none";
 
         await conn.close();
 
@@ -93,7 +94,7 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
     const conn = await db.connect();
 
     const data = await conn.query("SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_name = 'micro_data'");
-    const count = data.toArray()[0].count;
+    let count = data.toArray()[0].count;
     if(count == 0)
     {
         alert("Please upload CSV file first.");
@@ -109,6 +110,9 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
 
     console.log(result.toArray().map(row => row.toJSON())[1]);
 
+    count = result.toArray().length;
+    document.getElementById("numberStudies").innerText = count;
+    document.getElementById("searchResults").style.display = "block";
     displayHTML(result);
 
     await conn.close(); 
@@ -121,6 +125,7 @@ function displayHTML(result)
 
     if(len == 0)
     {
+        //May need to update this message
         console.log("CSV empty"); 
         alert("No CSV data found");
         return; 

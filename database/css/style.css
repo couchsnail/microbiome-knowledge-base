@@ -1,8 +1,16 @@
-table, th, td {border: 1px solid;}
+table, th, td 
+{
+    border: 1px solid;
+}
 
 table
 {
     display:block;
     overflow-x: auto;
     white-space: nowrap;
+}
+
+#searchResults
+{
+    display: none; 
 }
