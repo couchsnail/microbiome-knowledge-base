@@ -57,7 +57,7 @@ form.addEventListener("submit", async e => {
         //console.log(result.toArray().map(row => row.toJSON())[1]);
 
         displayHTML(result);
-        document.getElementById("searchResults").style.display = "none";
+        document.getElementById("search_results").style.display = "none";
 
         await conn.close();
 
@@ -112,7 +112,7 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
 
     count = result.toArray().length;
     document.getElementById("numberStudies").innerText = count;
-    document.getElementById("searchResults").style.display = "block";
+    document.getElementById("search_results").style.display = "block";
     displayHTML(result);
 
     await conn.close(); 

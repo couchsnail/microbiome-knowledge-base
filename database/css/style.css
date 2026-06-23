@@ -1,16 +1,39 @@
+
+.card 
+{
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+#search_results
+{
+    display: none; 
+    color:brown;
+    font-weight:bold;
+}
+
 table, th, td 
 {
     border: 1px solid;
 }
 
-table
+.table_wrapper
 {
-    display:block;
     overflow-x: auto;
     white-space: nowrap;
 }
 
-#searchResults
+#bio_table
 {
-    display: none; 
+    table-layout: auto;
+    width: auto;
+    white-space: nowrap !important;
+    display: table;
+}
+
+#bio_table th, #bio_table td {
+    white-space: nowrap !important;
 }

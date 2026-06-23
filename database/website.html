@@ -9,9 +9,7 @@
         <!--<script type="text/javascript" src="js/about.js"></script>-->
         <!--<script src="script.js"></script>-->
         <script type="module" src="js/script.js"></script>
-        <!--For parsing CSV files-->
-        <!--<script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>-->
-
+        
         <!--stylesheets-->
         <!--NOTE: Will add bootstrap to add other buttons and other fun things later-->
         <!--bootstrap-->
@@ -22,17 +20,22 @@
     </head>
 
     <body>
-        <h1>Microbiome Data Upload</h1>
-        <p>You can upload a csv file and view the columns and data appropriately.</p>
+        <h1 class = "d-flex align-items-center gap-3">Microbiome Data Upload</h1>
+        <p class = "d-flex align-items-center gap-3">You can upload a csv file and view the columns and data appropriately.</p>
 
-        <form>
-            <label for="myfile">Upload a CSV file:</label>
-            <input type="file" id="myfile" name="myfile" accept=".csv" required>
-
-            <div>
-                <button type="submit" id="submit-file" >Upload File</button>
+        <div class="file_upload">
+            <div class="card">
+                <div class="row">
+                <form>
+                    <label for="myfile"><b>Upload a CSV file:</b></label>
+                    <div class="col-6 d-flex align-items-center gap-3">
+                        <input type="file" class = "form-control w-auto" id="myfile" name="myfile" accept=".csv" required>
+                        <button type="submit" class ="btn btn-primary" id="submit-file" >Upload File</button>
+                    </div>
+                </form>
             </div>
-        </form>
+            </div>
+        </div>
         
         <!--Pagination saved for later since it's overcomplicating things right now-->
         <!--For pagination; not functional right now-->
@@ -46,62 +49,30 @@
             </select>
         </div>-->
 
-        <div id = "custom_attribute_search">
-            <form id="custom_attribute_search_form">
+        <div class = "custom_attribute_search">
+            <div class = "card">
                 <label><b>Filter by Custom Attributes</b></label>
-                <input name="customAttribute" id="customAttribute" placeholder="" type="text">
-                <input type="submit" id="customSearchSubmit" value="Search">
-            </form> 
-            <p id="searchResults" style="display: none;"><span id="numberStudies">0</span> studies found </p>
+                <div class = "d-flex align-items-center gap-3">
+                    <form id="custom_attribute_search_form" class="d-flex align-items-center gap-2">
+                        <input name="customAttribute" class = "form-control" id="customAttribute" placeholder="e.g. control" type="text">
+                        <input type="submit" class = "btn btn-outline-secondary" id="customSearchSubmit" value="Search">
+                    </form> 
+                </div>
+                <p id="search_results" style="display: none;"><span id="numberStudies">0</span> studies found </p>
+            </div>
         </div>
 
         <!--Actually probably make it a series of checkboxes for which columns they want displayed-->
         <!--Which doesn't actually require SQL, you can just hide them entirely from HTML LOL-->
-        
-        <table id=bio_table class="table table-striped">
-            <thead>
-            <tr id="header_row">
-                <!-- Column titles -->
-                <!--<th>source_study</th>
-                <th>accession</th>
-                <th>alias</th>
-                <th>center_name</th>
-                <th>broker_name</th>
-                <th>title</th>
-                <th>taxon_id</th>
-                <th>scientific_name</th>
-                <th>common_name</th>
-                <th>description</th>
-                <th>bio_material</th>
-                <th>culture_collection</th>
-                <th>specimen_voucher</th>
-                <th>collected_by</th>
-                <th>collection_date</th>
-                <th>country</th>
-                <th>host</th>
-                <th>identified_by</th>
-                <th>isolation_source</th>
-                <th>lat_lon</th>
-                <th>lab_host</th>
-                <th>environmental_sample</th>
-                <th>mating_type</th>
-                <th>sex</th>
-                <th>cell_type</th>
-                <th>dev_stage</th>
-                <th>tissue_type</th>
-                <th>cultivar</th>
-                <th>ecotype</th>
-                <th>isolate</th>
-                <th>strain</th>
-                <th>sub_species</th>
-                <th>cell_line</th>
-                <th>serotype</th>
-                <th>serovar</th>
-                <th>custom_attributes</th>-->
-            </tr>
-            </thead>
-            <tbody id="micro_table_body"></tbody>
-        </table>
+        <!--Wait why is this resetting my formatting when the search is called-->
+        <div class="table_wrapper">
+            <table id=bio_table class="table table-striped mb-0">
+                <thead>
+                    <tr id="header_row"></tr>
+                </thead>
+                <tbody id="micro_table_body"></tbody>
+            </table>
+        </div>
 
         <!--For pagination; not functional right now-->
         <!--<div class="text-center">

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@duckdb/duckdb-wasm": "^1.33.1-dev45.0",
-    "@duckdb/node-api": "^1.5.3-r.3"
+    "@duckdb/node-api": "^1.5.3-r.3",
+    "bootstrap": "^5.3.8"
   }
 }
