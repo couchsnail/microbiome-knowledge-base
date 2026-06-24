@@ -15,6 +15,20 @@
     font-weight:bold;
 }
 
+
+.checkbox_group
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 table, th, td 
 {
     border: 1px solid;
@@ -36,4 +50,7 @@ table, th, td
 
 #bio_table th, #bio_table td {
     white-space: nowrap !important;
+    width: auto;
 }
+
+
