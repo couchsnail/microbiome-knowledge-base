@@ -161,7 +161,9 @@ function displayHTML(result)
 
         for(let c = 0; c < col; c++)
         {
-            rowHTML += "<td>" + row[columns[c]] + "</td>";
+            const cellContent = String(row[columns[c]] ?? "").replaceAll("'", "&#39;");
+            rowHTML += `<td title='${cellContent}'>${row[columns[c]]}</td>`;
+            //rowHTML += "<td>" + row[columns[c]] + "</td>";
         }
 
         rowHTML +="</tr>";
