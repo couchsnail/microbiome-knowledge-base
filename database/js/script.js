@@ -74,6 +74,7 @@ form.addEventListener("submit", async e => {
 
 //Full-text search which I may need later
 //https://duckdb.org/docs/current/guides/sql_features/full_text_search
+//Rudimentary custom attributes search
 document.getElementById("custom_attribute_search_form").addEventListener("submit", async(e) =>
 {
     e.preventDefault(); //not sure if I need this line
@@ -118,6 +119,7 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
     await conn.close(); 
 })
 
+
 function displayHTML(result)
 {
     const data = result.toArray();
@@ -142,14 +144,14 @@ function displayHTML(result)
 
     let thead = document.getElementById("header_row");
     thead.innerHTML = "";
-    for(let i = 0; i < col; i++)
+    for(let i = 0; i < col; ++i)
     {
         thead.insertAdjacentHTML("beforeend", "<th>" + columns[i] + "</th>");
     }
 
     //console.log(columns, Object.keys(data[0].toJSON()));
 
-    for(let r = 0; r < len; r++)
+    for(let r = 0; r < len; ++r)
     {
         let row = data[r].toJSON();
         //if(r === 0) console.log(Object.keys(row));
@@ -161,7 +163,7 @@ function displayHTML(result)
 
         const maxPreviewLength = 20; //can make longer if it's too short but due to number of columns
 
-        for(let c = 0; c < col; c++)
+        for(let c = 0; c < col; ++c)
         {
             let string = String(row[columns[c]]);
             if(string == "" || string == null)
@@ -184,3 +186,47 @@ function displayHTML(result)
         bioBody.insertAdjacentHTML("beforeend", rowHTML);
     }
 }
+
+//Obtain all columns since this is built dynamically
+function getColumns()
+{
+    return Array.from(document.querySelectorAll("#header_row th")).map(th => th.textContent);
+}
+
+//onEvent handlers for all checkboxes
+//Also need to add error handling and some sort of visual indicator that the table is being reloaded
+document.getElementById("common_name_toggle").addEventListener("change", function()
+{
+    const columns = getColumns();
+    const index = columns.indexOf("common_name") + 1; 
+    console.log("Index of column being hidden: " + index);
+    
+    const rows = document.querySelectorAll("#bio_table tbody tr");
+    const len = rows.length;
+
+    for(let r = 0; r < len; ++r)
+    {
+        const cell = rows[r].cells[index];
+        if(this.checked)
+        {
+            console.log("Hiding common_name");
+            cell.style.display = "none";
+        }
+        else
+        {
+            console.log("Displaying common_name")
+            cell.style.display = "";
+        }
+    }
+
+})
+
+document.getElementById("description_toggle").addEventListener("change", function()
+{
+    const index = columns.indexOf("common_name");
+})
+
+document.getElementById("bio_material_toggle").addEventListener("change", function()
+{
+    const index = columns.indexOf("common_name");
+})
