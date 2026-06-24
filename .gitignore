@@ -428,5 +428,10 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+# DS Store is here for some reason
+.DS_Store
+
 # Example documents
 mmc_sample_reading/
+data/
+MMC1_ENA_sample_metadata.csv
