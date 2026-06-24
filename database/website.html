@@ -66,6 +66,7 @@
             <div class="card">
                 <details>
                     <summary><b>Hide Non-Vital Columns</b></summary>
+                    <!--Note: Fix column order later to match the vertical list-->
                     <div class="checkbox_group">
                         <label><input type="checkbox" id="common_name_toggle"> common_name</label>
                         <label><input type="checkbox" id="description_toggle"> description</label>
@@ -80,7 +81,7 @@
                         <label><input type="checkbox" id="environmental_sample_toggle"> environmental_sample</label>
                         <label><input type="checkbox" id="mating_type_toggle"> mating_type</label>
                         <label><input type="checkbox" id="sex_toggle"> sex</label>
-                        <label><input type="checkbox" id="cell_type"> cell_type</label>
+                        <label><input type="checkbox" id="cell_type_toggle"> cell_type</label>
                         <label><input type="checkbox" id="dev_stage_toggle"> dev_stage</label>
                         <label><input type="checkbox" id="tissue_type_toggle"> tissue_type</label>
                         <label><input type="checkbox" id="cultivar_toggle"> cultivar</label>
@@ -98,15 +99,17 @@
         <!--Actually probably make it a series of checkboxes for which columns they want displayed-->
         <!--Which doesn't actually require SQL, you can just hide them entirely from HTML LOL-->
         <!--Wait why is this resetting my formatting when the search is called-->
-        <div class="table_wrapper">
-            <table id=bio_table class="table table-striped mb-0">
-                <thead>
-                    <tr id="header_row"></tr>
-                </thead>
-                <tbody id="micro_table_body"></tbody>
-            </table>
+        <div class="container">
+            <div class="table_wrapper">
+                <table id=bio_table class="table table-striped mb-0 gap-3">
+                    <thead>
+                        <tr id="header_row"></tr>
+                    </thead>
+                    <tbody id="micro_table_body"></tbody>
+                </table>
+            </div>
         </div>
-
+        
         <!--For pagination; not functional right now-->
         <!--<div class="text-center">
             <button class="btn btn-outline-secondary" id="prevPageTop" type="button">Previous</button>

@@ -15,6 +15,11 @@
     font-weight:bold;
 }
 
+summary
+{
+    font-style: italic;
+    color:rgb(65, 63, 63);
+}
 
 .checkbox_group
 {
@@ -27,6 +32,11 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+}
+
+.container-fluid 
+{
+    padding: 1rem 2rem;
 }
 
 table, th, td 
