@@ -256,6 +256,7 @@ function toggleAllColumns()
     elementToggle("country_toggle", "country");
     elementToggle("identified_by_toggle", "identified_by");
     elementToggle("isolation_source_toggle", "isolation_source");
+    elementToggle("lat_lon_toggle", "lat_lon");
     elementToggle("lab_host_toggle", "lab_host");
     elementToggle("environmental_sample_toggle", "environmental_sample");
     elementToggle("mating_type_toggle", "mating_type");
@@ -271,26 +272,3 @@ function toggleAllColumns()
     elementToggle("serotype_toggle", "serotype");
     elementToggle("serovar_toggle", "serovar");
 }
-    /*elementToggle("common_name_toggle", "common_name");
-    elementToggle("description_toggle", "description");
-    elementToggle("bio_material_toggle", "bio_material");
-    elementToggle("culture_collection_toggle", "culture_collection");
-    elementToggle("specimen_voucher_toggle", "specimen_voucher");
-    elementToggle("collected_by_toggle", "collected_by");
-    elementToggle("country_toggle", "country");
-    elementToggle("identified_by_toggle", "identified_by");
-    elementToggle("isolation_source_toggle", "isolation_source");
-    elementToggle("lab_host_toggle", "lab_host");
-    elementToggle("environmental_sample_toggle", "environmental_sample");
-    elementToggle("mating_type_toggle", "mating_type");
-    elementToggle("sex_toggle", "sex");
-    elementToggle("cell_type_toggle", "cell_type");
-    elementToggle("dev_stage_toggle", "dev_stage");
-    elementToggle("tissue_type_toggle", "tissue_type");
-    elementToggle("cultivar_toggle", "cultivar");
-    elementToggle("ecotype_toggle", "ecotype");
-    elementToggle("isolate_toggle", "isolate");
-    elementToggle("strain_toggle", "strain");
-    elementToggle("sub_species_toggle", "sub_species");
-    elementToggle("serotype_toggle", "serotype");
-    elementToggle("serovar_toggle", "serovar");*/
