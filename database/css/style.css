@@ -36,7 +36,4 @@ table, th, td
 
 #bio_table th, #bio_table td {
     white-space: nowrap !important;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }

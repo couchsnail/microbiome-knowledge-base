@@ -159,11 +159,25 @@ function displayHTML(result)
 
         rowHTML += "<tr>";
 
+        const maxPreviewLength = 20; //can make longer if it's too short but due to number of columns
+
         for(let c = 0; c < col; c++)
         {
-            const cellContent = String(row[columns[c]] ?? "").replaceAll("'", "&#39;");
-            rowHTML += `<td title='${cellContent}'>${row[columns[c]]}</td>`;
-            //rowHTML += "<td>" + row[columns[c]] + "</td>";
+            let string = String(row[columns[c]]);
+            if(string == "" || string == null)
+            {
+                string = "null";
+            }
+
+            if(string.length > maxPreviewLength)
+            {
+                const preview = string.slice(0,maxPreviewLength) + "...";
+                rowHTML += "<td><details><summary>" + preview + "</summary>" + string + "</details></td>";
+            }
+            else
+            {
+                rowHTML += "<td>" + string + "</td>";
+            }
         }
 
         rowHTML +="</tr>";
