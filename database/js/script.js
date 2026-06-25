@@ -105,8 +105,9 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
 
 
     //Note: Need to error check for if they try to search and the table is empty
-
-    let query_string = "SELECT * FROM micro_data WHERE custom_attributes LIKE '%" + customAttributes + "%'";
+    let searchConditions = createSearchString(customAttribute.value);
+    let query_string = "SELECT * FROM micro_data WHERE " + searchConditions;
+    console.log("Query String: " + query_string);
     let result = await conn.query(query_string);
 
     console.log(result.toArray().map(row => row.toJSON())[1]);
@@ -118,6 +119,34 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
 
     await conn.close(); 
 })
+
+//Obtain all columns since this is built dynamically
+function getColumns()
+{
+    return Array.from(document.querySelectorAll("#header_row th")).map(th => th.textContent.trim());
+}
+
+
+function createSearchString(searchAttribute)
+{
+    let searchConditions = "";
+    const columns = getColumns();
+
+    let len = columns.length;
+
+    for(let i = 0; i < len; ++i)
+    {
+        if(i < len - 1)
+        {
+            searchConditions += "CAST(" + columns[i] + " AS TEXT) LIKE '%" + searchAttribute + "%' OR ";
+        }
+        else
+        {
+            searchConditions += "CAST(" + columns[i] + " AS TEXT) LIKE '%" + searchAttribute + "%'";
+        }
+    }
+    return searchConditions;
+}
 
 
 function displayHTML(result)
@@ -186,12 +215,6 @@ function displayHTML(result)
         bioBody.insertAdjacentHTML("beforeend", rowHTML);
     }
     toggleAllColumns();
-}
-
-//Obtain all columns since this is built dynamically
-function getColumns()
-{
-    return Array.from(document.querySelectorAll("#header_row th")).map(th => th.textContent);
 }
 
 //This only works when they're visible initially and not the other way around
