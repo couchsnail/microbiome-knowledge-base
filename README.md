@@ -49,9 +49,7 @@ requirements.txt
 ```
 
 # Project Scripts
-# ENA sample metadata pipeline
-
-A two-stage pipeline for ENA (European Nucleotide Archive) sample metadata:
+This repsitory contains a two-stage pipeline for analyzing ENA (European Nucleotide Archive) sample metadata:
 
 1. **`fetch_ena_samples.py`** — scrape sample metadata from ENA for a set of
    accessions and write it to CSV.
@@ -59,6 +57,8 @@ A two-stage pipeline for ENA (European Nucleotide Archive) sample metadata:
    disease under study, whether it's a control, and whether it's a tumor.
 
 Stage 1's output is exactly stage 2's input, so they chain directly.
+
+You can find the example output from these two scripts in `sample_output`.
 
 ```
 accessions ──fetch──▶ *_samples.csv ──classify──▶ classified.csv
@@ -85,6 +85,7 @@ python fetch_ena_samples.py --accession-file studies.csv
 Output: `<label>_samples.csv`, where `<label>` is built from the accessions
 (e.g. `PRJEB11419_PRJNA545312_samples.csv`, or `PRJEB11419_and_4_more_samples.csv`
 for many).
+**See `mmc2_head.csv` for a more detailed example.**
 
 Notes:
 - Fetches in batches of 50 with retries and a short delay between requests to be
@@ -101,6 +102,7 @@ The output columns are: `source_study`, the structural fields (`accession`,
 `alias`, `center_name`, `broker_name`, `title`, `taxon_id`, `scientific_name`,
 `common_name`, `description`), the ERC000011 checklist fields, and
 `custom_attributes` — the exact schema stage 2 expects.
+
 
 ---
 
@@ -132,6 +134,8 @@ python classify_ena_samples.py new/*.csv -o out/new.csv --vote-scope "all/*.csv"
 
 Run `python classify_ena_samples.py -h` for all options
 (`--mode`, `--compress`, `--vote-scope`, `--chunksize`, `--quiet`).
+
+**See `mmc2_example_classification_prelim_head.csv` for an example of what this script will output.**
 
 ### How it works
 1. **Pass 1 – learn study diseases.** Every row in the *vote scope* is classified
