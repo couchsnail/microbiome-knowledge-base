@@ -7,6 +7,12 @@
     - Utilize DuckDB and some form of SQL Database in tandem for local hosting
     - Implement fulltext search for better time/memory efficiency
     - Improve query efficency
+    - Sort table by given specifications (medium priority)
+    - Add upload to Cloud option
+    - SRA-Explorer
+    - MMC2 as a Google Sheet that queries for API data
+    - Add built database to Google Sheets
+    - Without user loading Google Sheet/figure out how to do it wihtout it crashing
     
     **Visual/HTML Side**
     - Alter/bugfix checkboxes such that non-vital columns can be hidden initially and 
