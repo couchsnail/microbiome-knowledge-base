@@ -4,11 +4,11 @@
    as a proof of concept. 
 
    TO RUN: 
-   - cd api -> fastapi dev
+   - cd api -> fastapi dev (or api/fastapi dev)
 
    TO-DO:
-   - Get basic code to work
-   - Add in ENA Portal: https://www.ebi.ac.uk/ena/portal/api/swagger-ui/index.html
+   - Get basic code to work (DONE)
+   - Add in ENA Portal: https://www.ebi.ac.uk/ena/portal/api/swagger-ui/index.html (DONE)
    - Integrate with Cham's script (?) (but it only need for like, one row)
    - Integrate with PostGreSQL for large database size
    - Integrate with pre-existing HTML webpage
