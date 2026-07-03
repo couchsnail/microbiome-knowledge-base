@@ -15,9 +15,9 @@
 
    """
 from fastapi import FastAPI
+from ena_accessor import fetch
 
 app = FastAPI()
-
 
 @app.get("/")
 def read_root():
@@ -27,3 +27,13 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
+
+"""Used for accession code fetching using the public ENA API"""
+@app.get("/fetch/{accession}")
+def fetch_accession(accession: str):
+    data = fetch(accession)
+    return data
+
+# Debugger
+if __name__ == '__main__':
+    print("Pain and Suffering")
