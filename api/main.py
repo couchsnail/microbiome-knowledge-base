@@ -16,6 +16,7 @@
    """
 from fastapi import FastAPI
 from ena_accessor import fetch
+from scripts.fetch_ena_samples import run
 
 app = FastAPI()
 
@@ -31,9 +32,22 @@ def read_item(item_id: int, q: str | None = None):
 """Used for accession code fetching using the public ENA API"""
 @app.get("/fetch/{accession}")
 def fetch_accession(accession: str):
-    data = fetch(accession)
-    return data
+    run(accession)
+    # return data
+    """data = fetch(accession)
+    return data"""
+
+"""Used for parsing data and then adding it to csv/database"""
+@app.post("/submit")
+def submit(accession: str):
+    run(accession)
 
 # Debugger
 if __name__ == '__main__':
     print("Pain and Suffering")
+
+"""Anyway from my understanding is that I have to get some code that like
+I dunno
+upon the user saying 'Hey so I want this like parsed or whatever', send a message to...
+command line
+hmmm"""

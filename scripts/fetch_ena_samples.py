@@ -447,6 +447,109 @@ def main():
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
 
+def run(accession_codes, fast=False):
+    if accession_codes:
+        # accession_codes = args.accession_codes
+        skipped = []
+    else:
+        accession_codes, skipped = load_accessions_from_file(args.accession_file)
+        if skipped:
+            print(f"Skipped {len(skipped)} invalid/duplicate entries: {skipped[:10]}"
+                  + (" ..." if len(skipped) > 10 else ""))
+        if not accession_codes:
+            print("No valid accession codes found. Exiting.")
+            return
+ 
+    # Default label for the data
+    label = (
+        "_".join(accession_codes)
+        if len(accession_codes) <= 3
+        else f"{accession_codes[0]}_and_{len(accession_codes) - 1}_more"
+    )
+    out_path = f"{label}_samples.csv"
+    # Checkpoint in case script dies in the middle of running so that we don't have to start over
+    checkpoint_path = _checkpoint_path(label)
+ 
+    # If checkpoint file exists (JSON) then continue from checkpoint
+    checkpoint = load_checkpoint(label)
+    all_records: list[dict] = checkpoint["fetched_samples"]
+    completed_studies: set[str] = set(checkpoint["completed_studies"])
+ 
+    # This loop runs per study just to keep track of which studies are complete in the checkpoint
+    for accession in accession_codes:
+        if accession in completed_studies:
+            print(f"\nSkipping {accession} (already in checkpoint).")
+            continue
+ 
+        print(f"\nFetching sample accessions for {accession}...")
+        try:
+            sample_accessions = get_sample_accessions(accession)
+        except requests.exceptions.HTTPError as e:
+            print(f"  Error fetching samples for {accession}: {e} — skipping.")
+            continue
+ 
+        # Work out which individual samples are already saved so we can resume
+        # mid-study (e.g. if the script died partway through a large study).
+        already_fetched = {
+            r["accession"] for r in all_records
+            if r.get("source_study") == accession and "accession" in r
+        }
+        remaining = [s for s in sample_accessions if s not in already_fetched]
+ 
+        print(f"  Found {len(sample_accessions)} samples "
+              f"({len(already_fetched)} already in checkpoint, {len(remaining)} to fetch)")
+ 
+        if remaining:
+            print(f"  Fetching XML metadata...")
+ 
+        total_batches = (len(remaining) + BATCH_SIZE - 1) // BATCH_SIZE
+ 
+        for i in range(0, len(remaining), BATCH_SIZE):
+            batch = remaining[i : i + BATCH_SIZE]
+            batch_num = i // BATCH_SIZE + 1
+            print(f"    Batch {batch_num}/{total_batches} ({len(batch)} samples)...", end="\r")
+ 
+            batch_records = fetch_sample_xml(batch, fast=args.fast)
+ 
+            for r in batch_records:
+                r["source_study"] = accession
+ 
+            all_records.extend(batch_records)
+ 
+            # Save progress after every batch so a timeout loses at most one batch
+            save_checkpoint(label, all_records, list(completed_studies))
+ 
+            time.sleep(0.1)  # Stagger requests so we don't DDOS
+ 
+        completed_studies.add(accession)
+        save_checkpoint(label, all_records, list(completed_studies))
+        print(f"    Done with {accession}.")
+ 
+    if not all_records:
+        print("\nNo records fetched. Exiting.")
+        return
+ 
+    # Build final DataFrame
+    df = pd.DataFrame(all_records)
+ 
+    # Reorder: standard columns first, then anything unexpected, then custom_attributes
+    present_standard = [c for c in ORDERED_COLUMNS if c in df.columns]
+    extra_cols = [c for c in df.columns if c not in set(ORDERED_COLUMNS)]
+    df = df[present_standard + extra_cols]
+ 
+    # Drop columns that are entirely empty
+    df = df.dropna(axis=1, how="all")
+ 
+    print(f"\n\nTotal records fetched: {len(df)}")
+    print(f"Columns found: {df.columns.tolist()}\n")
+    print(df.head())
+ 
+    df.to_csv(out_path, index=False)
+    print(f"\nSaved to {out_path}")
+ 
+    # Only delete the checkpoint once the CSV is safely written
+    delete_checkpoint(label)
+
 
 if __name__ == "__main__":
     main()
