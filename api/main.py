@@ -4,19 +4,21 @@
    as a proof of concept. 
 
    TO RUN: 
-   - cd api -> fastapi dev (or api/fastapi dev)
+   - PYTHONPATH=. fastapi dev api/main.py (it can't find scripts otherwise for the imports)
 
    TO-DO:
    - Get basic code to work (DONE)
    - Add in ENA Portal: https://www.ebi.ac.uk/ena/portal/api/swagger-ui/index.html (DONE)
-   - Integrate with Cham's script (?) (but it only need for like, one row)
+   - Integrate with Cham's script 
+     - Fetching samples: Yes 
+     - Classifying samples: Yesn't
    - Integrate with PostGreSQL for large database size
    - Integrate with pre-existing HTML webpage
 
    """
 from fastapi import FastAPI
 from ena_accessor import fetch
-from scripts.fetch_ena_samples import run
+from scripts.fetch_ena_samples import run # note: immensely janky right now
 
 app = FastAPI()
 

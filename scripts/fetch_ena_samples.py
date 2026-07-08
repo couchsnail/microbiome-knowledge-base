@@ -447,6 +447,8 @@ def main():
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
 
+# Note: Not a viable long-term solution; currently like this for testing
+# There is definitely a simpler way I'm just overthinking
 def run(accession_codes:str, fast=False):
     accession_codes=[accession_codes]
     if accession_codes:
