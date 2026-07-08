@@ -447,11 +447,13 @@ def main():
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
 
-def run(accession_codes, fast=False):
+def run(accession_codes:str, fast=False):
+    accession_codes=[accession_codes]
     if accession_codes:
         # accession_codes = args.accession_codes
         skipped = []
     else:
+        # note: does not work 
         accession_codes, skipped = load_accessions_from_file(args.accession_file)
         if skipped:
             print(f"Skipped {len(skipped)} invalid/duplicate entries: {skipped[:10]}"
@@ -509,7 +511,7 @@ def run(accession_codes, fast=False):
             batch_num = i // BATCH_SIZE + 1
             print(f"    Batch {batch_num}/{total_batches} ({len(batch)} samples)...", end="\r")
  
-            batch_records = fetch_sample_xml(batch, fast=args.fast)
+            batch_records = fetch_sample_xml(batch, fast=False)
  
             for r in batch_records:
                 r["source_study"] = accession

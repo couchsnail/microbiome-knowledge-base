@@ -40,7 +40,7 @@ def fetch_accession(accession: str):
 """Used for parsing data and then adding it to csv/database"""
 @app.post("/submit")
 def submit(accession: str):
-    run(accession)
+    run(accession=[accession])
 
 # Debugger
 if __name__ == '__main__':
