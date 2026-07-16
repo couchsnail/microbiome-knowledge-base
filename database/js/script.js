@@ -13,8 +13,13 @@
     - MMC2 as a Google Sheet that queries for API data
     - Add built database to Google Sheets
     - Without user loading Google Sheet/figure out how to do it wihtout it crashing
+    - PostGreSQL go brrr (local storage?)
     
     **Visual/HTML Side**
+    - Two tabs: 
+      1) One for looking up studies via accession code and then uploading it to the database
+      2) Actually viewing said database (without uploading CSV file)
+      3) Alternatively we could just. Add said CSV file TO the PostGreSQL database
     - Alter/bugfix checkboxes such that non-vital columns can be hidden initially and 
       voluntarily be displayed
     - Add visual indicator to show why certain table rows were pulled up for custom search
@@ -52,6 +57,42 @@ await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
 URL.revokeObjectURL(worker_url);
 
 const form = document.querySelector("form");
+
+//Function for hiding/showing tabs
+//Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
+function openTab(evt, tabName)
+{
+    let i = 0;
+
+    let tabContent = document.getElementsByClassName("tabcontent");
+    let tabLen = tabContent.length;
+    for (i = 0; i < tabLen; ++i) 
+    {
+        tabContent[i].style.display = "none";
+    }
+
+    let tabLinks = document.getElementsByClassName("tablinks");
+    let linLen = tabLinks.length;
+    for (i = 0; i < linLen; ++i) 
+    {
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+document.getElementById("defaultOpen").addEventListener("click", function(e) 
+{
+    openTab(e, "access_data");
+});
+
+document.getElementById("csvTab").addEventListener("click", function(e) 
+{
+    openTab(e, "view_csv");
+});
+
+document.getElementById("defaultOpen").click();
 
 //Note to self: Ask if we want to keep the data persistent/backside later
 

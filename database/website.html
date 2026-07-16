@@ -18,110 +18,124 @@
     </head>
 
     <body>
-        <h1 class = "d-flex align-items-center gap-3">Microbiome Data Upload</h1>
-        <p class = "d-flex align-items-center gap-3">You can upload a csv file and view the columns and data appropriately.</p>
-
-        <!--Section for uploading a CSV file-->
-        <!--Needs error handling for when a user attempts to upload a non-CSV file-->
-        <div class="file_upload">
-            <div class="card">
-                <div class="row">
-                <form>
-                    <label for="myfile"><b>Upload a CSV file:</b></label>
-                    <div class="col-6 d-flex align-items-center gap-3">
-                        <input type="file" class = "form-control w-auto" id="myfile" name="myfile" accept=".csv" required>
-                        <button type="submit" class ="btn btn-primary" id="submit-file" >Upload File</button>
-                    </div>
-                </form>
-            </div>
-            </div>
+        <div class="tab">
+            <button class="tablinks" id="defaultOpen">Access Data</button>
+            <button class="tablinks" id="csvTab">View CSV</button>
         </div>
 
-        <!--For pagination (which only loads X results at a time, 
-        with an option to see the next or previous X results)-->
-        <!--<div id="pagination">
-            <label for="studiesPerPage">Studies Per Page:</label>
-            <select id="studiesPerPage">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-        </div>-->
-
-        <!--Section for searching up custom attributes across all columns-->
-        <!--Currently only returns results that contain the exact input to the searchbar-->
-        <div class = "custom_attribute_search">
-            <div class = "card">
-                <label><b>Filter by Custom Attributes</b></label>
-                <div class = "d-flex align-items-center gap-3">
-                    <form id="custom_attribute_search_form" class="d-flex align-items-center gap-2">
-                        <input name="customAttribute" class = "form-control" id="customAttribute" placeholder="e.g. control" type="text">
-                        <input type="submit" class = "btn btn-outline-secondary" id="customSearchSubmit" value="Search">
-                    </form> 
-                </div>
-                <p id="search_results" style="display: none;"><span id="numberStudies">0</span> studies found </p>
-            </div>
-        </div>
-
-        <!--Toggle for hiding columns to improve table readability-->
-        <!--Will eventually be updated to hide these all by default; 
-            at present that functionality doesn't work-->
-        <div class="column_checkboxes">
-            <div class="card">
-                <details>
-                    <summary><b>Hide Non-Vital Columns</b></summary>
-                    <!--Note: Fix column order later to match the vertical list-->
-                    <!--Assumes that all of these columns exist in a given CSV-->
-                    <div class="checkbox_group">
-                        <label><input type="checkbox" id="common_name_toggle"> common_name</label>
-                        <label><input type="checkbox" id="description_toggle"> description</label>
-                        <label><input type="checkbox" id="bio_material_toggle"> bio_material</label>
-                        <label><input type="checkbox" id="culture_collection_toggle"> culture_collection</label>
-                        <label><input type="checkbox" id="specimen_voucher_toggle"> specimen_voucher</label>
-                        <label><input type="checkbox" id="collected_by_toggle"> collected_by</label>
-                        <label><input type="checkbox" id="country_toggle"> country</label>
-                        <label><input type="checkbox" id="identified_by_toggle"> identified_by</label>
-                        <label><input type="checkbox" id="isolation_source_toggle"> isolation_source</label>
-                        <label><input type="checkbox" id="lat_lon_toggle"> lat_lon</label>
-                        <label><input type="checkbox" id="lab_host_toggle"> lab_host</label>
-                        <label><input type="checkbox" id="environmental_sample_toggle"> environmental_sample</label>
-                        <label><input type="checkbox" id="mating_type_toggle"> mating_type</label>
-                        <label><input type="checkbox" id="sex_toggle"> sex</label>
-                        <label><input type="checkbox" id="cell_type_toggle"> cell_type</label>
-                        <label><input type="checkbox" id="dev_stage_toggle"> dev_stage</label>
-                        <label><input type="checkbox" id="tissue_type_toggle"> tissue_type</label>
-                        <label><input type="checkbox" id="cultivar_toggle"> cultivar</label>
-                        <label><input type="checkbox" id="ecotype_toggle"> ecotype</label>
-                        <label><input type="checkbox" id="isolate_toggle"> isolate</label>
-                        <label><input type="checkbox" id="strain_toggle"> strain</label>
-                        <label><input type="checkbox" id="sub_species_toggle"> sub_species</label>
-                        <label><input type="checkbox" id="serotype_toggle"> serotype</label>
-                        <label><input type="checkbox" id="serovar_toggle"> serovar</label>
-                    </div>
-                </details>
-            </div>
-        </div>
-
-        <!--Table for displaying CSV data in a table-->
-        <!--Columns and rows are dynamically created-->
-        <!--Will improve readability at a later date-->
-        <div class="container">
-            <div class="table_wrapper">
-                <table id=bio_table class="table table-striped mb-0 gap-3">
-                    <thead>
-                        <tr id="header_row"></tr>
-                    </thead>
-                    <tbody id="micro_table_body"></tbody>
-                </table>
-            </div>
+        <div id="access_data" class="tabcontent">
+            <h1 class="d-flex align-items-center gap-3">Access Microbiome Data</h1>
+            <p class="d-flex align-items-center gap-3">You can enter an accession code and pull up the data. Then, you can save it to the database.</p>
         </div>
         
-        <!--For pagination; not functional right now-->
-        <!--<div class="text-center">
-            <button class="btn btn-outline-secondary" id="prevPageTop" type="button">Previous</button>
-            <button class="btn btn-outline-secondary" id="nextPageTop" type="button">Next</button>
-        </div>-->
+        <div id="view_csv" class="tabcontent">
+            <!--Tab for uploading and viewing CSV data-->
+            <h1 class="d-flex align-items-center gap-3">Microbiome Data Upload</h1>
+            <p class="d-flex align-items-center gap-3">You can upload a csv file and view the columns and data appropriately.</p>
+        
+            <!--Section for uploading a CSV file-->
+            <!--Needs error handling for when a user attempts to upload a non-CSV file-->
+            <div class="file_upload">
+                <div class="card">
+                    <div class="row">
+                    <form>
+                        <label for="myfile"><b>Upload a CSV file:</b></label>
+                        <div class="col-6 d-flex align-items-center gap-3">
+                            <input type="file" class = "form-control w-auto" id="myfile" name="myfile" accept=".csv" required>
+                            <button type="submit" class ="btn btn-primary" id="submit-file" >Upload File</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
+            <!--For pagination (which only loads X results at a time, 
+            with an option to see the next or previous X results)-->
+            <!--<div id="pagination">
+                <label for="studiesPerPage">Studies Per Page:</label>
+                <select id="studiesPerPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>-->
+
+            <!--Section for searching up custom attributes across all columns-->
+            <!--Currently only returns results that contain the exact input to the searchbar-->
+            <div class = "custom_attribute_search">
+                <div class = "card">
+                    <label><b>Filter by Custom Attributes</b></label>
+                    <div class = "d-flex align-items-center gap-3">
+                        <form id="custom_attribute_search_form" class="d-flex align-items-center gap-2">
+                            <input name="customAttribute" class = "form-control" id="customAttribute" placeholder="e.g. control" type="text">
+                            <input type="submit" class = "btn btn-outline-secondary" id="customSearchSubmit" value="Search">
+                        </form> 
+                    </div>
+                    <p id="search_results" style="display: none;"><span id="numberStudies">0</span> studies found </p>
+                </div>
+            </div>
+
+            <!--Toggle for hiding columns to improve table readability-->
+            <!--Will eventually be updated to hide these all by default; 
+                at present that functionality doesn't work-->
+            <div class="column_checkboxes">
+                <div class="card">
+                    <details>
+                        <summary><b>Hide Non-Vital Columns</b></summary>
+                        <!--Note: Fix column order later to match the vertical list-->
+                        <!--Assumes that all of these columns exist in a given CSV-->
+                        <div class="checkbox_group">
+                            <label><input type="checkbox" id="common_name_toggle"> common_name</label>
+                            <label><input type="checkbox" id="description_toggle"> description</label>
+                            <label><input type="checkbox" id="bio_material_toggle"> bio_material</label>
+                            <label><input type="checkbox" id="culture_collection_toggle"> culture_collection</label>
+                            <label><input type="checkbox" id="specimen_voucher_toggle"> specimen_voucher</label>
+                            <label><input type="checkbox" id="collected_by_toggle"> collected_by</label>
+                            <label><input type="checkbox" id="country_toggle"> country</label>
+                            <label><input type="checkbox" id="identified_by_toggle"> identified_by</label>
+                            <label><input type="checkbox" id="isolation_source_toggle"> isolation_source</label>
+                            <label><input type="checkbox" id="lat_lon_toggle"> lat_lon</label>
+                            <label><input type="checkbox" id="lab_host_toggle"> lab_host</label>
+                            <label><input type="checkbox" id="environmental_sample_toggle"> environmental_sample</label>
+                            <label><input type="checkbox" id="mating_type_toggle"> mating_type</label>
+                            <label><input type="checkbox" id="sex_toggle"> sex</label>
+                            <label><input type="checkbox" id="cell_type_toggle"> cell_type</label>
+                            <label><input type="checkbox" id="dev_stage_toggle"> dev_stage</label>
+                            <label><input type="checkbox" id="tissue_type_toggle"> tissue_type</label>
+                            <label><input type="checkbox" id="cultivar_toggle"> cultivar</label>
+                            <label><input type="checkbox" id="ecotype_toggle"> ecotype</label>
+                            <label><input type="checkbox" id="isolate_toggle"> isolate</label>
+                            <label><input type="checkbox" id="strain_toggle"> strain</label>
+                            <label><input type="checkbox" id="sub_species_toggle"> sub_species</label>
+                            <label><input type="checkbox" id="serotype_toggle"> serotype</label>
+                            <label><input type="checkbox" id="serovar_toggle"> serovar</label>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!--Table for displaying CSV data in a table-->
+            <!--Columns and rows are dynamically created-->
+            <!--Will improve readability at a later date-->
+            <div class="container">
+                <div class="table_wrapper">
+                    <table id=bio_table class="table table-striped mb-0 gap-3">
+                        <thead>
+                            <tr id="header_row"></tr>
+                        </thead>
+                        <tbody id="micro_table_body"></tbody>
+                    </table>
+                </div>
+            </div>
+        
+            <!--For pagination; not functional right now-->
+            <!--<div class="text-center">
+                <button class="btn btn-outline-secondary" id="prevPageTop" type="button">Previous</button>
+                <button class="btn btn-outline-secondary" id="nextPageTop" type="button">Next</button>
+            </div>-->
+        </div>
+        
 
     </body>
 </html>

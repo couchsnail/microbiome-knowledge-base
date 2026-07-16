@@ -5,6 +5,8 @@
 
    TO RUN: 
    - PYTHONPATH=. fastapi dev api/main.py (it can't find scripts otherwise for the imports)
+   - python fetch_ena_samples.py --accession-codes PRJEB8073 
+     - for debugging purposes
 
    TO-DO:
    - Get basic code to work (DONE)
@@ -32,6 +34,10 @@ def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
 
 """Used for accession code fetching using the public ENA API"""
+# Note: Should only be returning data
+# But the current version is for debugging the parsing/whatever
+# Also like this is just so you see the info from said study and whatever
+# before choosing to do. All that other stuff
 @app.get("/fetch/{accession}")
 def fetch_accession(accession: str):
     run(accession)
@@ -40,6 +46,7 @@ def fetch_accession(accession: str):
     return data"""
 
 """Used for parsing data and then adding it to csv/database"""
+# Sequence should be: Press "Upload to database" => Call run(accession) => do all that fun stuff => Write to database and not a csv
 @app.post("/submit")
 def submit(accession: str):
     run(accession=[accession])
