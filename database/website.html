@@ -19,13 +19,26 @@
 
     <body>
         <div class="tab">
-            <button class="tablinks" id="defaultOpen">Access Data</button>
-            <button class="tablinks" id="csvTab">View CSV</button>
+            <button type="button" class="tablinks" id="defaultOpen">Access Data</button>
+            <button type="button" class="tablinks" id="csvTab">View CSV</button>
         </div>
 
         <div id="access_data" class="tabcontent">
             <h1 class="d-flex align-items-center gap-3">Access Microbiome Data</h1>
             <p class="d-flex align-items-center gap-3">You can enter an accession code and pull up the data. Then, you can save it to the database.</p>
+
+            <div class = "accession_code_request">
+                <div class = "card">
+                    <label><b>Enter an accession code</b></label>
+                    <div class = "d-flex align-items-center gap-3">
+                        <form id="custom_attribute_search_form" class="d-flex align-items-center gap-2">
+                            <input name="customAttribute" class = "form-control" id="accessionCodeSearch" placeholder="e.g. PRJNA545312" type="text">
+                            <input type="submit" class = "btn btn-outline-secondary" id="accessionCodeSubmit" value="Pull Data">
+                        </form> 
+                    </div>
+                </div>
+            </div>
+
         </div>
         
         <div id="view_csv" class="tabcontent">
