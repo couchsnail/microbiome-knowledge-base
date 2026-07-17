@@ -21,6 +21,7 @@
         <div class="tab">
             <button type="button" class="tablinks" id="defaultOpen">Access Data</button>
             <button type="button" class="tablinks" id="csvTab">View CSV</button>
+            <button type="button" class="tablinks" id="dataTab">View Database</button>
         </div>
 
         <div id="access_data" class="tabcontent">
@@ -166,6 +167,65 @@
                 <button class="btn btn-outline-secondary" id="prevPageTop" type="button">Previous</button>
                 <button class="btn btn-outline-secondary" id="nextPageTop" type="button">Next</button>
             </div>-->
+        </div>
+
+        <div id="view_database" class="tabcontent">
+            <h1 class="d-flex align-items-center gap-3">Database Viewing Portal</h1>
+            <p class="d-flex align-items-center gap-3">You can view the entire database here. The page may take awhile to load everything, so please be patient.</p>
+
+            <!--Section for searching up custom attributes across all columns-->
+            <!--Currently only returns results that contain the exact input to the searchbar-->
+            <div class = "custom_attribute_search">
+                <div class = "card">
+                    <label><b>Filter by Custom Attributes</b></label>
+                    <div class = "d-flex align-items-center gap-3">
+                        <form id="custom_attribute_search_form" class="d-flex align-items-center gap-2">
+                            <input name="customAttribute" class = "form-control" id="customAttribute" placeholder="e.g. control" type="text">
+                            <input type="submit" class = "btn btn-outline-secondary" id="customSearchSubmit" value="Search">
+                        </form> 
+                    </div>
+                    <p id="search_results" style="display: none;"><span id="numberStudies">0</span> studies found </p>
+                </div>
+            </div>
+
+            <!--Toggle for hiding columns to improve table readability-->
+            <!--Will eventually be updated to hide these all by default; 
+                at present that functionality doesn't work-->
+            <div class="column_checkboxes">
+                <div class="card">
+                    <details>
+                        <summary><b>Hide Non-Vital Columns</b></summary>
+                        <!--Note: Fix column order later to match the vertical list-->
+                        <!--Assumes that all of these columns exist in a given CSV-->
+                        <div class="checkbox_group">
+                            <label><input type="checkbox" id="common_name_toggle"> common_name</label>
+                            <label><input type="checkbox" id="description_toggle"> description</label>
+                            <label><input type="checkbox" id="bio_material_toggle"> bio_material</label>
+                            <label><input type="checkbox" id="culture_collection_toggle"> culture_collection</label>
+                            <label><input type="checkbox" id="specimen_voucher_toggle"> specimen_voucher</label>
+                            <label><input type="checkbox" id="collected_by_toggle"> collected_by</label>
+                            <label><input type="checkbox" id="country_toggle"> country</label>
+                            <label><input type="checkbox" id="identified_by_toggle"> identified_by</label>
+                            <label><input type="checkbox" id="isolation_source_toggle"> isolation_source</label>
+                            <label><input type="checkbox" id="lat_lon_toggle"> lat_lon</label>
+                            <label><input type="checkbox" id="lab_host_toggle"> lab_host</label>
+                            <label><input type="checkbox" id="environmental_sample_toggle"> environmental_sample</label>
+                            <label><input type="checkbox" id="mating_type_toggle"> mating_type</label>
+                            <label><input type="checkbox" id="sex_toggle"> sex</label>
+                            <label><input type="checkbox" id="cell_type_toggle"> cell_type</label>
+                            <label><input type="checkbox" id="dev_stage_toggle"> dev_stage</label>
+                            <label><input type="checkbox" id="tissue_type_toggle"> tissue_type</label>
+                            <label><input type="checkbox" id="cultivar_toggle"> cultivar</label>
+                            <label><input type="checkbox" id="ecotype_toggle"> ecotype</label>
+                            <label><input type="checkbox" id="isolate_toggle"> isolate</label>
+                            <label><input type="checkbox" id="strain_toggle"> strain</label>
+                            <label><input type="checkbox" id="sub_species_toggle"> sub_species</label>
+                            <label><input type="checkbox" id="serotype_toggle"> serotype</label>
+                            <label><input type="checkbox" id="serovar_toggle"> serovar</label>
+                        </div>
+                    </details>
+                </div>
+            </div>
         </div>
         
 

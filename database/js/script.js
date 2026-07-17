@@ -35,6 +35,12 @@
     For first tab: Add option to continually keep pulling up studies and then exporting to CSV
     and/or uploading to database
 
+    Actually, for the "Access study tab", add it to a duck_db database (temporary)
+    which will then display it in the current table
+    when you click "add to database"
+
+    It then takes the CSV function and adds it to the table IF it exists
+
     **Miscellaneous**
     - Error handling for database/HTML sides
     - General code clean-up and documentation
@@ -94,6 +100,11 @@ document.getElementById("defaultOpen").addEventListener("click", function(e)
 document.getElementById("csvTab").addEventListener("click", function(e) 
 {
     openTab(e, "view_csv");
+});
+
+document.getElementById("dataTab").addEventListener("click", function(e) 
+{
+    openTab(e, "view_database");
 });
 
 document.getElementById("defaultOpen").click();
