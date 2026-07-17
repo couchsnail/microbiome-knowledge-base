@@ -62,6 +62,7 @@ const form = document.querySelector("form");
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
 function openTab(evt, tabName)
 {
+    console.log("tab being opened");
     let i = 0;
 
     let tabContent = document.getElementsByClassName("tabcontent");

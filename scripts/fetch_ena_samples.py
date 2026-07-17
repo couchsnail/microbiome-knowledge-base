@@ -8,6 +8,27 @@ import json
 import re
 import os
 
+# imports for sql stuff
+import os
+from dotenv import load_dotenv
+import urllib.parse
+from sqlalchemy import create_engine # need this to run 
+
+# For security purposes, creates database and links to it
+# Documentation HERE: https://www.geeksforgeeks.org/python/connecting-postgresql-with-sqlalchemy-in-python/
+load_dotenv()
+
+password = urllib.parse.quote_plus(os.getenv("DB_PASSWORD"))
+user = os.getenv("DB_USER")
+host = os.getenv("DB_HOST")
+port = os.getenv("DB_PORT")
+db = os.getenv("DB_NAME")
+
+# Command to test if this writes to the database:
+# /Library/PostgreSQL/18/bin/psql -U postgres -d microbiome_data -c "SELECT * FROM micro_data LIMIT 10;"
+
+engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db}")
+
 # Base URL
 BASE_URL_BROWSER = "https://www.ebi.ac.uk/ena/browser/api"
 BATCH_SIZE = 50
@@ -447,6 +468,9 @@ def main():
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
 
+    # Documentation: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
+    df.to_sql("micro_data",engine,if_exists="append",index=False)
+
 # Note: Not a viable long-term solution; currently like this for testing
 # There is definitely a simpler way I'm just overthinking
 def run(accession_codes:str, fast=False):
@@ -553,6 +577,8 @@ def run(accession_codes:str, fast=False):
  
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
+
+    df.to_sql("micro_data",engine,if_exists="append",index=False)
 
 
 if __name__ == "__main__":

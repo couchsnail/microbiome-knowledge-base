@@ -7,6 +7,13 @@
    - PYTHONPATH=. fastapi dev api/main.py (it can't find scripts otherwise for the imports)
    - python fetch_ena_samples.py --accession-codes PRJEB8073 
      - for debugging purposes
+   - If you're running this locally, you need to create a .env folder with
+    - DB_URL=postgresql://postgres:password#@localhost:5432/database
+    - Otherwise it's a security risk
+   - Need postgresql installed (and pgadmin4 but this won't work if you're on Mac)
+   - Need to install sqlalchemy
+   - Need to install python-dotenv (security reasons)
+   - 
 
    TO-DO:
    - Get basic code to work (DONE)
