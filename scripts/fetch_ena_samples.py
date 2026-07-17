@@ -27,6 +27,9 @@ db = os.getenv("DB_NAME")
 # Command to test if this writes to the database:
 # /Library/PostgreSQL/18/bin/psql -U postgres -d microbiome_data -c "SELECT * FROM micro_data LIMIT 10;"
 
+# Command for dropping table (for debugging purposes)
+# /Library/PostgreSQL/18/bin/psql -U postgres -d microbiome_data -c "DROP TABLE micro_data;"
+
 engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db}")
 
 # Base URL

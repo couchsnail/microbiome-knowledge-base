@@ -39,6 +39,22 @@
                 </div>
             </div>
 
+            <!--Basically this loads the results of the current study to the database-->
+            <div class="container">
+                <div class="table_wrapper">
+                    <table id=bio_table class="table table-striped mb-0 gap-3">
+                        <thead>
+                            <tr id="header_row"></tr>
+                        </thead>
+                        <tbody id="micro_table_body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--To download the updated/grabbed files as CSV files-->
+            <!--Documentation HERE: https://datatables.net/extensions/buttons/examples/html5/simple.html-->
+            <button type="csvHtml5">Download as CSV</button>
+
         </div>
         
         <div id="view_csv" class="tabcontent">
@@ -127,6 +143,9 @@
                     </details>
                 </div>
             </div>
+
+            <!--Lets user export current file as a csv; perhaps add ability to custom name said file?-->
+            <button type="csvHtml5">Download as CSV</button>
 
             <!--Table for displaying CSV data in a table-->
             <!--Columns and rows are dynamically created-->

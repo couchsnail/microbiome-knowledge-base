@@ -32,6 +32,9 @@
     - Improve loading efficiency of visual elements (low priority)
     - Make graphics more visually appealing (low priority)
 
+    For first tab: Add option to continually keep pulling up studies and then exporting to CSV
+    and/or uploading to database
+
     **Miscellaneous**
     - Error handling for database/HTML sides
     - General code clean-up and documentation
