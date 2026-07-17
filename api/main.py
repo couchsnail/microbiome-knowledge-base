@@ -24,10 +24,15 @@
    - Integrate with PostGreSQL for large database size
    - Integrate with pre-existing HTML webpage
 
+   Documentation for FastAPI with JSON: https://fastapi.tiangolo.com/tutorial/body/
+   Documentation for getting around CORS: https://fastapi.tiangolo.com/tutorial/cors/#wildcards
+
    """
 from fastapi import FastAPI
 from ena_accessor import fetch
 from scripts.fetch_ena_samples import run # note: immensely janky right now
+from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -39,6 +44,26 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
+
+# Set-up so that you don't get error messages from it being sent to the wrong place
+"""origins = [
+    "http://localhost",
+    "https://127.0.0.1",
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:55581"
+]"""
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # replace later with more specific ones
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+class AccessionCode(BaseModel):
+    accession_code: str
 
 """Used for accession code fetching using the public ENA API"""
 # Note: Should only be returning data
@@ -53,10 +78,12 @@ def fetch_accession(accession: str):
     return data"""
 
 """Used for parsing data and then adding it to csv/database"""
+# Status Code documentation: https://fastapi.tiangolo.com/advanced/response-change-status-code/
 # Sequence should be: Press "Upload to database" => Call run(accession) => do all that fun stuff => Write to database and not a csv
 @app.post("/submit")
-def submit(accession: str):
-    run(accession=[accession])
+def submit(request: AccessionCode):
+    run(accession_codes=request.accession_code)
+    return {"status": "ok", "accession": request.accession_code}
 
 # Debugger
 if __name__ == '__main__':

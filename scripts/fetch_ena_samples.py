@@ -478,6 +478,7 @@ def main():
 # There is definitely a simpler way I'm just overthinking
 def run(accession_codes:str, fast=False):
     accession_codes=[accession_codes]
+    print(accession_codes)
     if accession_codes:
         # accession_codes = args.accession_codes
         skipped = []

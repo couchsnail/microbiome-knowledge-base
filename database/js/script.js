@@ -41,6 +41,11 @@
 
     It then takes the CSV function and adds it to the table IF it exists
 
+    Each row has a button for "adding to the database"
+    And a color indicator if it's already in the database
+    And there is an option to bulk add it
+    With some error messages about skipping duplicates and such
+
     **Miscellaneous**
     - Error handling for database/HTML sides
     - General code clean-up and documentation
@@ -69,6 +74,7 @@ const form = document.querySelector("form");
 
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
+//Done by default at the start
 function openTab(evt, tabName)
 {
     console.log("tab being opened");
@@ -111,6 +117,45 @@ document.getElementById("defaultOpen").click();
 
 //Note to self: Ask if we want to keep the data persistent/backside later
 
+//==============Code for Access Data Tab====================
+
+document.getElementById("accession_search_form").addEventListener("submit", async(e) =>
+{
+    e.preventDefault();
+
+    let accession_code = document.getElementById("accessionCodeSearch").value;
+
+    getAccession(accession_code);
+
+});
+
+//Documentation HERE: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+async function getAccession(accessionCode)
+{
+    try
+    {
+        console.log("Response successful");
+        const response = await fetch("http://127.0.0.1:8000/submit", 
+        {
+            method: "POST",
+            headers: 
+            {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ accession_code: accessionCode })
+        });
+
+        const data = await response.json();
+        console.log(data);
+        alert("Study Data found successfully");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+}
+//==============Code for View CSV Tab=======================
+
 /*
     This function enables the functionality that happens after the user presses 
     the "Submit" button for file uploading. It is required to upload a CSV file
@@ -124,7 +169,7 @@ document.getElementById("defaultOpen").click();
     Research is currently being conducted on how to accomplish this. 
 */
 //Documentation: https://developer.mozilla.org/en-US/docs/Web/API/File
-form.addEventListener("submit", async e => {
+document.getElementById("custom_attribute_search_form").addEventListener("submit", async e => {
     e.preventDefault();
     // save the file from the input file
     const file = document.getElementById("myfile").files[0];
