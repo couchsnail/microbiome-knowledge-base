@@ -23,6 +23,10 @@
      - Classifying samples: Yesn't
    - Integrate with PostGreSQL for large database size
    - Integrate with pre-existing HTML webpage
+   - Add NCBI accessor codes if needed later on 
+   - Can be used in a paper (so clean up thoroughly)
+   - Endgoal is to make it web-accessible (ideally without cheetah)
+   - Affordable online database storage (research it and live off of Google Sheets)
 
    Documentation for FastAPI with JSON: https://fastapi.tiangolo.com/tutorial/body/
    Documentation for getting around CORS: https://fastapi.tiangolo.com/tutorial/cors/#wildcards
@@ -72,7 +76,8 @@ class AccessionCode(BaseModel):
 # before choosing to do. All that other stuff
 @app.get("/fetch/{accession}")
 def fetch_accession(accession: str):
-    run(accession)
+    run(accession_codes=accession)
+    return {"status": "ok", "accession": accession}
     # return data
     """data = fetch(accession)
     return data"""

@@ -560,10 +560,11 @@ def run(accession_codes:str, fast=False):
     if not all_records:
         print("\nNo records fetched. Exiting.")
         return
- 
-    # Build final DataFrame
+
     df = pd.DataFrame(all_records)
- 
+
+    # Build final DataFrame
+    
     # Reorder: standard columns first, then anything unexpected, then custom_attributes
     present_standard = [c for c in ORDERED_COLUMNS if c in df.columns]
     extra_cols = [c for c in df.columns if c not in set(ORDERED_COLUMNS)]
@@ -582,6 +583,12 @@ def run(accession_codes:str, fast=False):
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
 
+    return df
+    
+def createDataRow(df):
+    df.to_sql("micro_data",engine,if_exists="append",index=False)
+
+def addToDatabase(df):
     df.to_sql("micro_data",engine,if_exists="append",index=False)
 
 

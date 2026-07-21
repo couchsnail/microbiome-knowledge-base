@@ -135,15 +135,8 @@ async function getAccession(accessionCode)
     try
     {
         console.log("Response successful");
-        const response = await fetch("http://127.0.0.1:8000/submit", 
-        {
-            method: "POST",
-            headers: 
-            {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ accession_code: accessionCode })
-        });
+        const responseString = "http://127.0.0.1:8000/fetch/" + accessionCode;
+        const response = await fetch(responseString);
 
         const data = await response.json();
         console.log(data);
