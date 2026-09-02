@@ -1,5 +1,0 @@
-source_study,accession,alias,center_name,title,taxon_id,scientific_name,common_name,custom_attributes
-PRJEB8073,SAMEA3178896,Chandra_Ewels_3,BABRAHAM INSTITUTE,Senescent Rep 1,9606,Homo sapiens,human,"{""ena-checklist"": ""ERC000011"", ""ena-first-public"": ""2015-01-11"", ""organism"": ""Homo sapiens"", ""ena-last-update"": ""2014-12-23""}"
-PRJEB8073,SAMEA3178897,Chandra_Ewels_4,BABRAHAM INSTITUTE,Senescent Rep 2,9606,Homo sapiens,human,"{""ena-checklist"": ""ERC000011"", ""ena-first-public"": ""2015-01-11"", ""organism"": ""Homo sapiens"", ""ena-last-update"": ""2014-12-23""}"
-PRJEB8073,SAMEA3178894,Chandra_Ewels_1,BABRAHAM INSTITUTE,Growing Rep 1,9606,Homo sapiens,human,"{""ena-checklist"": ""ERC000011"", ""ena-first-public"": ""2015-01-11"", ""organism"": ""Homo sapiens"", ""ena-last-update"": ""2014-12-23""}"
-PRJEB8073,SAMEA3178895,Chandra_Ewels_2,BABRAHAM INSTITUTE,Growing Rep 2,9606,Homo sapiens,human,"{""ena-checklist"": ""ERC000011"", ""ena-first-public"": ""2015-01-11"", ""organism"": ""Homo sapiens"", ""ena-last-update"": ""2014-12-23""}"
