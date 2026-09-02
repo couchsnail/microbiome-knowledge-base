@@ -527,7 +527,7 @@ function createSearchString(searchAttribute, headerName)
 
     let len = columns.length;
 
-    for(let i = 0; i < len; ++i)
+    /*for(let i = 0; i < len; ++i)
     {
         if(i < len - 1)
         {
@@ -537,7 +537,9 @@ function createSearchString(searchAttribute, headerName)
         {
             searchConditions += "LOWER(CAST(" + columns[i] + " AS TEXT)) LIKE '%" + searchCopy + "%'";
         }
-    }
+    }*/
+
+    searchConditions = "LOWER(CAST(custom_attributes AS TEXT)) LIKE '%" + searchCopy + "%'";
     return searchConditions;
 }
 
