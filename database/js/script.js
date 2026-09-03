@@ -642,6 +642,11 @@ function displayHTML(result, tableBody, headerName)
         bioBody.insertAdjacentHTML("beforeend", rowHTML);
     }
     toggleAllColumns();
+    
+    //Documentation for the list: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors
+    document.querySelectorAll(".checkbox_group input[type='checkbox']").forEach(checkbox => {
+        checkbox.dispatchEvent(new Event("change"));
+    })
 }
 
 /*
@@ -680,11 +685,11 @@ function elementToggle(checkbox_id, checkbox_name, tableBody, headerName)
         console.log("Checkbox index: " + index);
 
         //If column not found, alert the user and cancel function
-        if(index == -1)
+        /*if(index == -1)
         {
             alert("Column not found.");
             return;
-        }
+        }*/
 
         console.log("Adjusting: " + "col_" + checkbox_name + "_" + tableBody);
         if(this.checked)
