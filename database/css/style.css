@@ -1,5 +1,22 @@
 /*Style sheet: Informs the HTML how to render various elements*/
 
+body
+{
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+}
+
+h1, p
+{
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left; 
+}
+
 /* Basic tab style and layout taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp */
 /* Style the tab */
 .tab 
@@ -51,7 +68,7 @@
     margin-bottom: 1.25rem;
 }
 
-#search_results
+#search_results, #search_results_data
 {
     display: none; 
     color:brown;
@@ -82,6 +99,7 @@ summary
     padding: 1rem 2rem;
 }
 
+/* Table CSS */
 table, th, td 
 {
     border: 1px solid;
@@ -91,17 +109,18 @@ table, th, td
 {
     overflow-x: auto;
     white-space: nowrap;
+    width: 100%;
 }
 
 #bio_table
 {
-    table-layout: auto;
-    width: auto;
+    min-width: 1800px;
     white-space: nowrap !important;
     display: table;
 }
 
-#bio_table th, #bio_table td {
+#bio_table th, #bio_table td 
+{
     white-space: nowrap !important;
     width: auto;
 }
@@ -112,5 +131,9 @@ th.hidden, td.hidden
     opacity:0;
 }
 
+#next_page, #prev_page
+{
+    display: none;
+}
 
 

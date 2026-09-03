@@ -54,6 +54,10 @@ const form = document.querySelector("form");
 
 console.log("script loaded");
 
+const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 10};
+const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 10};
+const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 10};
+
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
 //Done by default at the start
@@ -405,8 +409,13 @@ document.getElementById("file_form").addEventListener("submit", async e => {
         await conn.query(`DROP TABLE IF EXISTS micro_data;`)
         await conn.query(`CREATE TABLE IF NOT EXISTS micro_data AS SELECT * FROM 'microdata.csv';`);
 
-        //Current limit is 100 rows
-        const result = await conn.query("SELECT * FROM micro_data LIMIT 5;");
+        let totalRows = await conn.query("SELECT COUNT(*) FROM micro_data");
+        micro_table_body_states['totalPages'] = Math.ceil(totalRows / 25);
+        
+        let limit = micro_table_body_states['rowDisplay'];
+        let offset = 0;
+
+        const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
 
         //Displays the table data in HTML
         displayHTML(result, "micro_table_body", "header_row");
@@ -416,11 +425,88 @@ document.getElementById("file_form").addEventListener("submit", async e => {
 
         //Close database connection
         await conn.close();
+
+        //make next and prev buttons enabled
+        let prevButton = document.getElementById("micro_prev_button");
+        prevButton.style.display = "";
+        prevButton.disabled = true;
+
+        let nextButton = document.getElementById("micro_next_button");
+        prevButton.style.display = "";
+        nextButton.disabled = false;
     }
     else //error handling for if the CSV file doesn't exist/isn't a CSV file
     {
         alert('Please select a csv file first.');
     }
+})
+
+document.getElementById("micro_prev_button").addEventListener("click", async e => {
+    const conn = await db.connect();
+
+    let page = micro_table_body_states['currentPage'];
+    let totalPages = micro_table_body_states['totalPages'];
+    let limit = micro_table_body_states['rowDisplay'];
+
+    page = page - 1; 
+
+    if(page <= 0)
+    {
+        return; 
+    }
+    
+    if(page == 1 && page < totalPages)
+    {
+        //perhaps also put this in displayHTML
+        let prevButton = document.getElementById("micro_prev_button");
+        prevButton.disabled = true;
+
+        let nextButton = document.getElementById("micro_next_button");
+        nextButton.disabled = false;
+    }
+
+    micro_table_body_states['currentPage'] = page;
+
+    let offset = (page - 1) * limit; 
+
+    const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
+    displayHTML(result, "micro_table_body", "header_row");
+
+    await conn.close(); 
+})
+
+document.getElementById("micro_next_button").addEventListener("click", async e => {
+    const conn = await db.connect();
+
+    let page = micro_table_body_states['currentPage'];
+    let totalPages = micro_table_body_states['totalPages'];
+    let limit = micro_table_body_states['rowDisplay'];
+
+    page = page + 1; 
+
+    if(page > totalPages)
+    {
+        return;
+    }
+    
+    if(page >= 1 && page <= totalPages)
+    {
+        //perhaps also put this in displayHTML
+        let nextButton = document.getElementById("micro_next_button");
+        nextButton.disabled = true;
+    }
+
+    let prevButton = document.getElementById("micro_prev_button");
+    prevButton.disabled = false;
+
+    micro_table_body_states['currentPage'] = page;
+
+    let offset = (page - 1) * limit; 
+
+    const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
+    displayHTML(result, "micro_table_body", "header_row");
+    
+    await conn.close(); 
 })
 
 /* Rudimentary search function
