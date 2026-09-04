@@ -136,4 +136,8 @@ th.hidden, td.hidden
     display: none;
 }
 
+.centered_table_output
+{
+    text-align:center;
+}
 

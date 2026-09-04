@@ -54,9 +54,9 @@ const form = document.querySelector("form");
 
 console.log("script loaded");
 
-const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20};
-const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20};
-const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20};
+const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
+const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
+const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
 
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
@@ -485,6 +485,7 @@ document.getElementById("micro_prev_button").addEventListener("click", async e =
 
     console.log("Updating current page display");
     micro_table_body_states['currentPage'] = page;
+
     document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
 
     console.log("Calculating offset");
@@ -492,7 +493,18 @@ document.getElementById("micro_prev_button").addEventListener("click", async e =
     console.log("Offset: " + offset);
 
     console.log("Displaying next table page");
-    const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
+
+    let params = micro_table_body_states['searchParameters'];
+    let result; 
+    if(params)
+    {
+        result = await conn.query("SELECT * FROM micro_data WHERE " + params + " LIMIT + " + limit + " OFFSET " + offset + ";");
+    }
+    else
+    {
+        result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
+    
+    }
     displayHTML(result, "micro_table_body", "header_row");
 
     await conn.close(); 
@@ -539,8 +551,17 @@ document.getElementById("micro_next_button").addEventListener("click", async e =
     console.log("Calculating offset");
     let offset = (page - 1) * limit; 
 
-    const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
-    displayHTML(result, "micro_table_body", "header_row");
+    let params = micro_table_body_states['searchParameters'];
+    let result; 
+    if(params)
+    {
+        result = await conn.query("SELECT * FROM micro_data WHERE " + params + " + LIMIT + " + limit + " OFFSET " + offset + ";");
+    }
+    else
+    {
+        result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
+    
+    }   displayHTML(result, "micro_table_body", "header_row");
     
     await conn.close(); 
 })
@@ -621,6 +642,7 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
 
     //We do the search twice here effectively; more efficient way to do this probably, but this is the best we've got right now
     let searchConditions = createSearchString(customAttributes, header);
+    micro_table_body_states['searchParameters'] = searchConditions;
     /*let query_string = "SELECT source_study, accession, alias, center_name, " + 
             "broker_name, title, taxon_id, scientific_name, common_name, description," + 
             "bio_material, culture_collection, specimen_voucher, collected_by," + 
