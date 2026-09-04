@@ -54,9 +54,9 @@ const form = document.querySelector("form");
 
 console.log("script loaded");
 
-const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 10};
-const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 10};
-const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 10};
+const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20};
+const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20};
+const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20};
 
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
@@ -409,8 +409,10 @@ document.getElementById("file_form").addEventListener("submit", async e => {
         await conn.query(`DROP TABLE IF EXISTS micro_data;`)
         await conn.query(`CREATE TABLE IF NOT EXISTS micro_data AS SELECT * FROM 'microdata.csv';`);
 
-        let totalRows = await conn.query("SELECT COUNT(*) FROM micro_data");
-        micro_table_body_states['totalPages'] = Math.ceil(totalRows / 25);
+        let totalRows = await conn.query("SELECT COUNT(*) AS count FROM micro_data");
+        let rows = totalRows.toArray()[0].count;
+        console.log("Rows: " + rows);
+        micro_table_body_states['totalPages'] = Math.ceil(Number(rows) / 20);
         
         let limit = micro_table_body_states['rowDisplay'];
         let offset = 0;
@@ -426,13 +428,18 @@ document.getElementById("file_form").addEventListener("submit", async e => {
         //Close database connection
         await conn.close();
 
+
+        document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
+        document.getElementById("microPageTotal").innerText = micro_table_body_states['totalPages'];
+        document.getElementById("micro_page_counts").style.display = "block";
+
         //make next and prev buttons enabled
         let prevButton = document.getElementById("micro_prev_button");
         prevButton.style.display = "";
         prevButton.disabled = true;
 
         let nextButton = document.getElementById("micro_next_button");
-        prevButton.style.display = "";
+        nextButton.style.display = "";
         nextButton.disabled = false;
     }
     else //error handling for if the CSV file doesn't exist/isn't a CSV file
@@ -442,33 +449,49 @@ document.getElementById("file_form").addEventListener("submit", async e => {
 })
 
 document.getElementById("micro_prev_button").addEventListener("click", async e => {
+    e.preventDefault();
+    console.log("Prev button clicked");
     const conn = await db.connect();
 
     let page = micro_table_body_states['currentPage'];
+    console.log("Current page: " + page);
     let totalPages = micro_table_body_states['totalPages'];
     let limit = micro_table_body_states['rowDisplay'];
 
+    console.log("Calculating new page");
     page = page - 1; 
+    console.log("New page count: " + page);
 
     if(page <= 0)
     {
+        console.log("Page out of bounds < 0");
         return; 
     }
     
-    if(page == 1 && page < totalPages)
+    if(page == 1)
     {
+        console.log("Disabling prev button");
         //perhaps also put this in displayHTML
         let prevButton = document.getElementById("micro_prev_button");
         prevButton.disabled = true;
+    }
 
+    if(page <= totalPages)
+    {
+        console.log("Enabling next button");
         let nextButton = document.getElementById("micro_next_button");
         nextButton.disabled = false;
     }
 
+    console.log("Updating current page display");
     micro_table_body_states['currentPage'] = page;
+    document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
 
+    console.log("Calculating offset");
     let offset = (page - 1) * limit; 
+    console.log("Offset: " + offset);
 
+    console.log("Displaying next table page");
     const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
     displayHTML(result, "micro_table_body", "header_row");
 
@@ -476,20 +499,31 @@ document.getElementById("micro_prev_button").addEventListener("click", async e =
 })
 
 document.getElementById("micro_next_button").addEventListener("click", async e => {
+    e.preventDefault();
+    console.log("Next button clicked");
     const conn = await db.connect();
 
     let page = micro_table_body_states['currentPage'];
+    console.log("Current page: " + page);
     let totalPages = micro_table_body_states['totalPages'];
     let limit = micro_table_body_states['rowDisplay'];
 
+    console.log("Calculating new page");
     page = page + 1; 
+    console.log("New page count: " + page);
 
     if(page > totalPages)
     {
         return;
     }
+
+    if(page >= 1)
+    {
+        let prevButton = document.getElementById("micro_prev_button");
+        prevButton.disabled = false; 
+    }
     
-    if(page >= 1 && page <= totalPages)
+    if(page == totalPages)
     {
         //perhaps also put this in displayHTML
         let nextButton = document.getElementById("micro_next_button");
@@ -500,7 +534,9 @@ document.getElementById("micro_next_button").addEventListener("click", async e =
     prevButton.disabled = false;
 
     micro_table_body_states['currentPage'] = page;
+    document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
 
+    console.log("Calculating offset");
     let offset = (page - 1) * limit; 
 
     const result = await conn.query("SELECT * FROM micro_data LIMIT " + limit + " OFFSET " + offset + ";");
@@ -562,6 +598,19 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
     {
         alert("Please upload CSV file first.");
         await conn.close();
+
+        document.getElementById("microPageCount").innerText = 0;
+        document.getElementById("microPageTotal").innerText = 0;
+        document.getElementById("micro_page_counts").style.display = "none";
+
+        //make next and prev buttons enabled
+        let prevButton = document.getElementById("micro_prev_button");
+        prevButton.style.display = "none";
+        prevButton.disabled = true;
+
+        let nextButton = document.getElementById("micro_next_button");
+        nextButton.style.display = "none";
+        nextButton.disabled = true;
         return;
     }
 
@@ -569,28 +618,56 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
     console.log("Creating search string");
     //Note: Need to error check for if they try to search and the table is empty
     //createSearchString dynamically builds the query string
+
+    //We do the search twice here effectively; more efficient way to do this probably, but this is the best we've got right now
     let searchConditions = createSearchString(customAttributes, header);
-    let query_string = "SELECT source_study, accession, alias, center_name, " + 
+    /*let query_string = "SELECT source_study, accession, alias, center_name, " + 
             "broker_name, title, taxon_id, scientific_name, common_name, description," + 
             "bio_material, culture_collection, specimen_voucher, collected_by," + 
             "collection_date, country, host, identified_by, isolation_source," + 
             "lat_lon, lab_host, environmental_sample, mating_type, sex," + 
             "cell_type, dev_stage, tissue_type, cultivar, ecotype," + 
             "isolate, strain, sub_species, cell_line, serotype, serovar," +
-            "custom_attributes FROM micro_data WHERE " + searchConditions;
-    
-    console.log("Query string: " + query_string);
+            "custom_attributes FROM micro_data WHERE " + searchConditions + 
+            " LIMIT " + limit + " OFFSET " + offset;*/
+    let query_count = "SELECT COUNT(*) AS count FROM micro_data WHERE " + searchConditions;
+     
+    console.log("Query string: " + query_count);
     //Obtain rows from database table
+    let rowCounts = await conn.query(query_count);
+
+    let rows = rowCounts.toArray()[0].count;
+    console.log("Total rows: " + rows);
+    console.log("Total pages: " + Math.ceil(Number(rows) / 20));
+
+    micro_table_body_states['currentPage'] = 1; 
+    micro_table_body_states['totalPages'] = Math.ceil(Number(rows) / 20);
+
+    let limit = micro_table_body_states['rowDisplay'];
+    let offset = 0;
+
+    let query_string = "SELECT * FROM micro_data WHERE " + searchConditions + " LIMIT " + limit + " OFFSET " + offset;
     let result = await conn.query(query_string);
 
-    //Displays the number of results 
-    //This amount is determined from the entire database
-    //Not just the limited results
-    count = result.toArray().length;
-    console.log("Result length: " + count);
+    console.log("Count query: " + query_count);
+    console.log("Data query: " + query_string);
 
-    document.getElementById("numberStudies").innerText = count;
+    document.getElementById("numberStudies").innerText = rows;
     document.getElementById("search_results").style.display = "block";
+
+    document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
+    document.getElementById("microPageTotal").innerText = micro_table_body_states['totalPages'];
+    document.getElementById("micro_page_counts").style.display = "block";
+
+    //make next and prev buttons enabled
+    let prevButton = document.getElementById("micro_prev_button");
+    prevButton.style.display = "";
+    prevButton.disabled = true;
+
+    let nextButton = document.getElementById("micro_next_button");
+    nextButton.style.display = "";
+    nextButton.disabled = false;
+
     displayHTML(result, "micro_table_body", "header_row");
 
     //Close database connection
@@ -678,7 +755,7 @@ function displayHTML(result, tableBody, headerName)
     {
         let coli = document.createElement("col");
         coli.id = "col_" + columns[i] + "_" + tableBody;
-        console.log("coli.id: " + coli.id);
+        //console.log("coli.id: " + coli.id);
         colgroup.appendChild(coli);
         thead.insertAdjacentHTML("beforeend", "<th>" + columns[i] + "</th>");
     }
@@ -761,14 +838,14 @@ function elementToggle(checkbox_id, checkbox_name, tableBody, headerName)
     document.getElementById(checkbox_id).addEventListener("change", function()
     {
         //Obtain column data
-        console.log("Header: " + headerName);
+        //console.log("Header: " + headerName);
         const columns = getColumns(headerName);
 
         //Obtain the name of a column
-        console.log("Checkbox name: " + checkbox_name);
+        //console.log("Checkbox name: " + checkbox_name);
         const index = columns.indexOf(checkbox_name); 
 
-        console.log("Checkbox index: " + index);
+        //console.log("Checkbox index: " + index);
 
         //If column not found, alert the user and cancel function
         /*if(index == -1)
@@ -777,7 +854,7 @@ function elementToggle(checkbox_id, checkbox_name, tableBody, headerName)
             return;
         }*/
 
-        console.log("Adjusting: " + "col_" + checkbox_name + "_" + tableBody);
+        //console.log("Adjusting: " + "col_" + checkbox_name + "_" + tableBody);
         if(this.checked)
         {
             document.getElementById("col_" + checkbox_name + "_" + tableBody).style.visibility = "collapse";
@@ -882,6 +959,19 @@ document.getElementById("custom_attribute_search_form_database").addEventListene
     {
         alert("Please add data to database.");
         await conn.close();
+
+        document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
+        document.getElementById("microPageTotal").innerText = micro_table_body_states['totalPages'];
+        document.getElementById("micro_page_counts").style.display = "block";
+
+        //make next and prev buttons enabled
+        let prevButton = document.getElementById("micro_prev_button");
+        prevButton.style.display = "";
+        prevButton.disabled = true;
+
+        let nextButton = document.getElementById("micro_next_button");
+        nextButton.style.display = "";
+        nextButton.disabled = false;
         return;
     }
 
