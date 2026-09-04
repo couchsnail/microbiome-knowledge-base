@@ -124,11 +124,23 @@ async function loadDatabase()
             schema: "main",
             create: true
         });
-        console.log("Table created/updated");
+        
+        let totalRows = await conn.query("SELECT COUNT(*) AS count FROM complete_database");
+        let rows = totalRows.toArray()[0].count;
+        console.log("Rows: " + rows);
+        let pageTotal = Math.ceil(Number(rows) / 20);
+
+        data_table_body_states['totalPages'] = pageTotal;
+        
+        let limit = data_table_body_states['rowDisplay'];
+        let offset = 0;
+
+        const data_entries = await conn.query("SELECT * FROM complete_database LIMIT " + limit + " OFFSET " + offset + ";");
+
         
         //Selects all of the columns in the database. Currently inconsistent with other SELECT statements
         //because the columns aren't showing up in the right order. 
-        let data_entries = await conn.query("SELECT source_study, accession, alias, center_name, " + 
+        /*let data_entries = await conn.query("SELECT source_study, accession, alias, center_name, " + 
             "broker_name, title, taxon_id, scientific_name, common_name, description," + 
             "bio_material, culture_collection, specimen_voucher, collected_by," + 
             "collection_date, country, host, identified_by, isolation_source," + 
@@ -141,8 +153,9 @@ async function loadDatabase()
             "disease_from_names, age_present, sex_present, antibiotic_present," +
             "geography_present, body_site_group, sequencing_type, disease_group," +
             "age_key, sex_key, disease_key, reviewer, reviewer_agrees, reviewer_notes" +
-            " FROM complete_database");
-            
+            " FROM complete_database");*/
+        
+        
         console.log("Table results fetched");
         //Close database connection
         await conn.close();
@@ -150,6 +163,27 @@ async function loadDatabase()
 
         //Display study data in tables
         console.log("Displaying Database HTML now");
+
+        document.getElementById("dataPageCount").innerText = data_table_body_states['currentPage'];
+        document.getElementById("dataPageTotal").innerText = data_table_body_states['totalPages'];
+        document.getElementById("data_page_counts").style.display = "block";
+
+        //make next and prev buttons enabled
+        let prevButton = document.getElementById("data_prev_button");
+        prevButton.style.display = "";
+        prevButton.disabled = true;
+
+        let nextButton = document.getElementById("data_next_button");
+        nextButton.style.display = "";
+        if(pageTotal > 1)
+        {
+            nextButton.disabled = false;
+        }
+        else
+        {
+            nextButton.disabled = true;
+        }
+        
         displayHTML(data_entries, "data_table_body", "data_header_row");
         console.log("Database HTML successfully displayed");
     }
@@ -412,7 +446,8 @@ document.getElementById("file_form").addEventListener("submit", async e => {
         let totalRows = await conn.query("SELECT COUNT(*) AS count FROM micro_data");
         let rows = totalRows.toArray()[0].count;
         console.log("Rows: " + rows);
-        micro_table_body_states['totalPages'] = Math.ceil(Number(rows) / 20);
+        let pageTotal = Math.ceil(Number(rows) / 20);
+        micro_table_body_states['totalPages'] = pageTotal;
         
         let limit = micro_table_body_states['rowDisplay'];
         let offset = 0;
@@ -440,7 +475,14 @@ document.getElementById("file_form").addEventListener("submit", async e => {
 
         let nextButton = document.getElementById("micro_next_button");
         nextButton.style.display = "";
-        nextButton.disabled = false;
+        if(pageTotal > 1)
+        {
+            nextButton.disabled = false;
+        }
+        else
+        {
+            nextButton.disabled = true;
+        }
     }
     else //error handling for if the CSV file doesn't exist/isn't a CSV file
     {
@@ -829,6 +871,7 @@ function displayHTML(result, tableBody, headerName)
     toggleAllColumns();
     
     //Documentation for the list: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors
+    //A bit buggy for some reason
     document.querySelectorAll(".checkbox_group input[type='checkbox']").forEach(checkbox => {
         checkbox.dispatchEvent(new Event("change"));
     })
@@ -982,25 +1025,27 @@ document.getElementById("custom_attribute_search_form_database").addEventListene
         alert("Please add data to database.");
         await conn.close();
 
-        document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
-        document.getElementById("microPageTotal").innerText = micro_table_body_states['totalPages'];
-        document.getElementById("micro_page_counts").style.display = "block";
+        document.getElementById("dataPageCount").innerText = data_table_body_states['currentPage'];
+        document.getElementById("dataPageTotal").innerText = data_table_body_states['totalPages'];
+        document.getElementById("data_page_counts").style.display = "none";
 
         //make next and prev buttons enabled
-        let prevButton = document.getElementById("micro_prev_button");
-        prevButton.style.display = "";
+        let prevButton = document.getElementById("data_prev_button");
+        prevButton.style.display = "none";
         prevButton.disabled = true;
 
-        let nextButton = document.getElementById("micro_next_button");
-        nextButton.style.display = "";
-        nextButton.disabled = false;
+        let nextButton = document.getElementById("data_next_button");
+        nextButton.style.display = "none";
+        nextButton.disabled = true;
         return;
     }
 
     console.log("Creating search string");
+
     //Note: Need to error check for if they try to search and the table is empty
     //createSearchString dynamically builds the query string
     let searchConditions = createSearchString(customAttributes, header);
+    data_table_body_states['searchParameters'] = searchConditions;
     /*let query_string = "SELECT source_study, accession, alias, center_name, " + 
             "broker_name, title, taxon_id, scientific_name, common_name, description," + 
             "bio_material, culture_collection, specimen_voucher, collected_by," + 
@@ -1015,7 +1060,20 @@ document.getElementById("custom_attribute_search_form_database").addEventListene
             "geography_present, body_site_group, sequencing_type, disease_group," +
             "age_key, sex_key, disease_key, reviewer, reviewer_agrees, reviewer_notes" +
             " FROM complete_database WHERE " + searchConditions;*/
-    let query_string = "SELECT * FROM complete_database WHERE " + searchConditions;
+    let query_count = "SELECT COUNT(*) AS count FROM complete_database WHERE " + searchConditions;
+    let rowCounts = await conn.query(query_count);
+
+    let rows = rowCounts.toArray()[0].count;
+
+    data_table_body_states['currentPage'] = 1; 
+    data_table_body_states['totalPages'] = Math.ceil(Number(rows) / 20);
+
+    let limit = data_table_body_states['rowDisplay'];
+    let offset = 0;
+
+
+    let query_string = "SELECT * FROM complete_database WHERE " + searchConditions + " LIMIT " + limit + " OFFSET " + offset;
+    
     console.log("Query string: " + query_string);
     //Obtain rows from database table
     let result = await conn.query(query_string);
@@ -1028,9 +1086,141 @@ document.getElementById("custom_attribute_search_form_database").addEventListene
 
     document.getElementById("numberStudiesData").innerText = count;
     document.getElementById("search_results_data").style.display = "block";
+
+    document.getElementById("dataPageCount").innerText = data_table_body_states['currentPage'];
+    document.getElementById("dataPageTotal").innerText = data_table_body_states['totalPages'];
+    document.getElementById("data_page_counts").style.display = "block";
+
+    //make next and prev buttons enabled
+    let prevButton = document.getElementById("data_prev_button");
+    prevButton.style.display = "";
+    prevButton.disabled = true;
+
+    let nextButton = document.getElementById("data_next_button");
+    nextButton.style.display = "";
+    nextButton.disabled = false;
+
     displayHTML(result, "data_table_body", "data_header_row");
 
     //Close database connection
+    await conn.close(); 
+})
+
+document.getElementById("data_prev_button").addEventListener("click", async e => {
+    e.preventDefault();
+    console.log("Prev button clicked");
+    const conn = await db.connect();
+
+    let page = data_table_body_states['currentPage'];
+    console.log("Current page: " + page);
+    let totalPages = data_table_body_states['totalPages'];
+    let limit = data_table_body_states['rowDisplay'];
+
+    console.log("Calculating new page");
+    page = page - 1; 
+    console.log("New page count: " + page);
+
+    if(page <= 0)
+    {
+        console.log("Page out of bounds < 0");
+        return; 
+    }
+    
+    if(page == 1)
+    {
+        console.log("Disabling prev button");
+        //perhaps also put this in displayHTML
+        let prevButton = document.getElementById("data_prev_button");
+        prevButton.disabled = true;
+    }
+
+    if(page <= totalPages)
+    {
+        console.log("Enabling next button");
+        let nextButton = document.getElementById("data_next_button");
+        nextButton.disabled = false;
+    }
+
+    console.log("Updating current page display");
+    data_table_body_states['currentPage'] = page;
+
+    document.getElementById("dataPageCount").innerText = data_table_body_states['currentPage'];
+
+    console.log("Calculating offset");
+    let offset = (page - 1) * limit; 
+    console.log("Offset: " + offset);
+
+    console.log("Displaying next table page");
+
+    let params = data_table_body_states['searchParameters'];
+    let result; 
+    if(params)
+    {
+        result = await conn.query("SELECT * FROM complete_database WHERE " + params + " LIMIT + " + limit + " OFFSET " + offset + ";");
+    }
+    else
+    {
+        result = await conn.query("SELECT * FROM complete_database LIMIT " + limit + " OFFSET " + offset + ";");
+    
+    }
+    displayHTML(result, "data_table_body", "data_header_row");
+
+    await conn.close(); 
+})
+
+document.getElementById("data_next_button").addEventListener("click", async e => {
+    e.preventDefault();
+    console.log("Next button clicked");
+    const conn = await db.connect();
+
+    let page = data_table_body_states['currentPage'];
+    console.log("Current page: " + page);
+    let totalPages = data_table_body_states['totalPages'];
+    let limit = data_table_body_states['rowDisplay'];
+
+    console.log("Calculating new page");
+    page = page + 1; 
+    console.log("New page count: " + page);
+
+    if(page > totalPages)
+    {
+        return;
+    }
+
+    if(page >= 1)
+    {
+        let prevButton = document.getElementById("data_prev_button");
+        prevButton.disabled = false; 
+    }
+    
+    if(page == totalPages)
+    {
+        //perhaps also put this in displayHTML
+        let nextButton = document.getElementById("data_next_button");
+        nextButton.disabled = true;
+    }
+
+    let prevButton = document.getElementById("data_prev_button");
+    prevButton.disabled = false;
+
+    data_table_body_states['currentPage'] = page;
+    document.getElementById("dataPageCount").innerText = data_table_body_states['currentPage'];
+
+    console.log("Calculating offset");
+    let offset = (page - 1) * limit; 
+
+    let params = data_table_body_states['searchParameters'];
+    let result; 
+    if(params)
+    {
+        result = await conn.query("SELECT * FROM complete_database WHERE " + params + " + LIMIT + " + limit + " OFFSET " + offset + ";");
+    }
+    else
+    {
+        result = await conn.query("SELECT * FROM complete_database LIMIT " + limit + " OFFSET " + offset + ";");
+    
+    }   displayHTML(result, "data_table_body", "data_header_row");
+    
     await conn.close(); 
 })
 

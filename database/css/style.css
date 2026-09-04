@@ -141,3 +141,8 @@ th.hidden, td.hidden
     text-align:center;
 }
 
+#micro_page_counts, #data_page_counts
+{
+    text-align:center;
+}
+
