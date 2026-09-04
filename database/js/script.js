@@ -570,7 +570,7 @@ document.getElementById("micro_prev_button").addEventListener("click", async e =
     let result; 
     if(params)
     {
-        result = await conn.query("SELECT * FROM micro_data WHERE " + params + " LIMIT + " + limit + " OFFSET " + offset + ";");
+        result = await conn.query("SELECT * FROM micro_data WHERE " + params + " LIMIT " + limit + " OFFSET " + offset + ";");
     }
     else
     {
@@ -627,7 +627,7 @@ document.getElementById("micro_next_button").addEventListener("click", async e =
     let result; 
     if(params)
     {
-        result = await conn.query("SELECT * FROM micro_data WHERE " + params + " + LIMIT + " + limit + " OFFSET " + offset + ";");
+        result = await conn.query("SELECT * FROM micro_data WHERE " + params + " LIMIT + " + limit + " OFFSET " + offset + ";");
     }
     else
     {
