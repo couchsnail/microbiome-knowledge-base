@@ -44,6 +44,11 @@
                 </div>
             </div>
 
+            <button type="button" id="database_save" type="submit">Save to Database</button>
+
+            <!--Allows user to download study information in the form of a CSV.-->
+            <button type="button" id="study_csv_download">Download as CSV</button>
+
             <!--Outputs the study information from the accession code into a table-->
             <div class="container">
                 <div class="table_wrapper">
@@ -57,10 +62,11 @@
                 </div>
             </div>
 
-            <button type="button" id="database_save" type="submit">Save to Database</button>
-
-            <!--Allows user to download study information in the form of a CSV.-->
-            <button type="button" id="study_csv_download">Download as CSV</button>
+            <div class="centered_table_output">
+                <p id="study_page_counts" style="display: none;">Displaying <span id="studyPageCount"></span> out of <span id="studyPageTotal">0</span> pages</p>
+                <button type="button" class="prev_button" id="study_prev_button" style="display: none;">Previous</button>
+                <button type="button" class = "next_button" id="study_next_button" style="display: none;">Next</button>
+            </div>
 
         </div>
 

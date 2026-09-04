@@ -295,7 +295,17 @@ async function getAccession(accessionCode)
             "cell_type, dev_stage, tissue_type, cultivar, ecotype," + 
             "isolate, strain, sub_species, cell_line, serotype, serovar," +
             "custom_attributes FROM study_data;");*/
-        let study_results = await conn.query("SELECT * FROM study_data");
+
+        let totalRows = await conn.query("SELECT COUNT(*) AS count FROM study_data");
+        let rows = totalRows.toArray()[0].count;
+        console.log("Rows: " + rows);
+        let pageTotal = Math.ceil(Number(rows) / 20);
+        study_table_body_states['totalPages'] = pageTotal;
+        
+        let limit = study_table_body_states['rowDisplay'];
+        let offset = 0;
+
+        let study_results = await conn.query("SELECT * FROM study_data LIMIT " + limit + " OFFSET " + offset);
         console.log("Table results fetched");
 
         //Close database connection
@@ -305,6 +315,27 @@ async function getAccession(accessionCode)
         //Display study data in tables
         console.log("Displaying HTML now");
         displayHTML(study_results, "study_table_body", "study_header_row");
+
+        document.getElementById("studyPageCount").innerText = study_table_body_states['currentPage'];
+        document.getElementById("studyPageTotal").innerText = study_table_body_states['totalPages'];
+        document.getElementById("study_page_counts").style.display = "block";
+
+        //make next and prev buttons enabled
+        let prevButton = document.getElementById("study_prev_button");
+        prevButton.style.display = "";
+        prevButton.disabled = true;
+
+        let nextButton = document.getElementById("study_next_button");
+        nextButton.style.display = "";
+        if(pageTotal > 1)
+        {
+            nextButton.disabled = false;
+        }
+        else
+        {
+            nextButton.disabled = true;
+        }
+
         console.log("HTML successfully displayed");
 
         //alert("Study Data accessed successfully");
@@ -462,7 +493,6 @@ document.getElementById("file_form").addEventListener("submit", async e => {
 
         //Close database connection
         await conn.close();
-
 
         document.getElementById("microPageCount").innerText = micro_table_body_states['currentPage'];
         document.getElementById("microPageTotal").innerText = micro_table_body_states['totalPages'];
