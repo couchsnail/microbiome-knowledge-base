@@ -666,12 +666,15 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
     console.log("Searching from CSV");
 
     //Note: Will likely change name of this variable later
-    let customAttributes = document.getElementById("customAttribute").value;
-    let header = "header_row";
-    console.log("Custom attribute: " + customAttributes);
+    let isEmpty = true; 
+    document.querySelectorAll('#custom_attribute_search_form input').forEach(function(input) {
+        if(input.value != "")
+        {
+            isEmpty = false;
+        }
+    });
 
-    //Test if string is empty
-    if(customAttributes == "")
+    if(isEmpty)
     {
         console.log("Empty");
         alert("Please enter a custom attribute to search for.");
@@ -713,7 +716,7 @@ document.getElementById("custom_attribute_search_form").addEventListener("submit
     //createSearchString dynamically builds the query string
 
     //We do the search twice here effectively; more efficient way to do this probably, but this is the best we've got right now
-    let searchConditions = createSearchString(customAttributes, header);
+    let searchConditions = createSearchString("custom_attribute_search_form");
     micro_table_body_states['searchParameters'] = searchConditions;
     /*let query_string = "SELECT source_study, accession, alias, center_name, " + 
             "broker_name, title, taxon_id, scientific_name, common_name, description," + 
@@ -776,27 +779,25 @@ function getColumns(headerName)
 }
 
 //Dynamically creates query search string based on every column
-function createSearchString(searchAttribute, headerName)
+function createSearchString(formId)
 {
-    let searchCopy = searchAttribute.toLowerCase(); 
-    let searchConditions = "";
-    const columns = getColumns(headerName);
+    let temp = "";
+    let searchTemp = ""; 
+    let searchConditions = []
 
-    let len = columns.length;
-
-    /*for(let i = 0; i < len; ++i)
-    {
-        if(i < len - 1)
+    document.querySelectorAll("#" + formId + " input").forEach(function(input) {
+        temp = input.value;
+        if(temp.trim() != "" && temp != input.defaultValue)
         {
-            searchConditions += "LOWER(CAST(" + columns[i] + " AS TEXT)) LIKE '%" + searchCopy + "%' OR ";
+            temp = temp.toLowerCase();
+            searchTemp = "LOWER(CAST(" + input.name + " AS TEXT)) LIKE '%" + temp + "%'";
+            searchConditions.push(searchTemp);
         }
-        else
-        {
-            searchConditions += "LOWER(CAST(" + columns[i] + " AS TEXT)) LIKE '%" + searchCopy + "%'";
-        }
-    }*/
+    });
 
-    searchConditions = "LOWER(CAST(custom_attributes AS TEXT)) LIKE '%" + searchCopy + "%'";
+
+    searchConditions = searchConditions.join(" AND ");
+    console.log("Search Conditions: " + searchConditions);
     return searchConditions;
 }
 
@@ -1029,12 +1030,20 @@ document.getElementById("custom_attribute_search_form_database").addEventListene
     console.log("Searching database");
     
     //Note: Will likely change name of this variable later
-    let customAttributes = document.getElementById("customAttributeData").value;
-    let header = "data_header_row";
-    console.log("Custom attribute: " + customAttributes);
+    //let customAttributes = document.getElementById("customAttributeData").value;
+    let isEmpty = true; 
+    document.querySelectorAll('#custom_attribute_search_form_database input').forEach(function(input) {
+        if(input.value != "")
+        {
+            isEmpty = false;
+        }
+    });
+
+    //let header = "data_header_row";
+    //console.log("Custom attribute: " + customAttributes);
 
     //Test if string is empty
-    if(customAttributes == "")
+    if(isEmpty)
     {
         console.log("Empty");
         alert("Please enter a custom attribute to search for.");
@@ -1074,7 +1083,7 @@ document.getElementById("custom_attribute_search_form_database").addEventListene
 
     //Note: Need to error check for if they try to search and the table is empty
     //createSearchString dynamically builds the query string
-    let searchConditions = createSearchString(customAttributes, header);
+    let searchConditions = createSearchString("custom_attribute_search_form_database");
     data_table_body_states['searchParameters'] = searchConditions;
     /*let query_string = "SELECT source_study, accession, alias, center_name, " + 
             "broker_name, title, taxon_id, scientific_name, common_name, description," + 

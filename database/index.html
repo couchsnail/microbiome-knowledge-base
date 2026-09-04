@@ -95,13 +95,67 @@
             <!--Currently only returns results that contain the exact input to the searchbar-->
             <div class = "custom_attribute_search">
                 <div class = "card">
-                    <label><b>Filter by Custom Attributes</b></label>
-                    <div class = "d-flex align-items-center gap-3">
-                        <form id="custom_attribute_search_form" class="d-flex align-items-center gap-2">
-                            <input name="customAttribute" class = "form-control" id="customAttribute" placeholder="e.g. control" type="text">
-                            <input type="submit" class = "button" id="customSearchSubmit" value="Search">
-                        </form> 
-                    </div>
+                    <details>
+                        <summary><b>Filter by Custom Attributes</b></summary>
+                        <div class = "d-flex align-items-center gap-3">
+                            <form id="custom_attribute_search_form" class="d-flex flex-wrap gap-3">
+                                <div class = "mb-3">
+                                    <label for="sourceStudyMicro"><b>Source Study:</b></label>
+                                    <input name="source_study" class="form-control" id="sourceStudyMicro" placeholder="e.g. PRJEB8073" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="accessionMicro"><b>Accession:</b></label>
+                                    <input name="accession" class="form-control" id="accessionMicro" placeholder="e.g. SAMEA3178896" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="centerNameMicro"><b>Center Name:</b></label>
+                                    <input name="center_name" class="form-control" id="centerNameMicro" placeholder="e.g. BABRAHAM INSTITUTE" type="text">
+                                </div>
+                            
+                                <div class = "mb-3">
+                                    <label for="brokerMicro"><b>Broker Name:</b></label>
+                                    <input name="broker" class="form-control" id="brokerMicro" placeholder="e.g. control" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="titleDataMicro"><b>Title:</b></label>
+                                    <input name="title" class="form-control" id="titleMicro" placeholder="e.g. Growing Rep 1" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="taxonIdDataMicro"><b>Taxon ID:</b></label>
+                                    <input name="taxon_id" class="form-control" id="taxonIdData" placeholder="e.g. 9606" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="scientificNameMicro"><b>Scientific Name:</b></label>
+                                    <input name="scientific_name" class="form-control" id="scientificNameData" placeholder="e.g. Homo sapiens" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="hostMicro"><b>Host:</b></label>
+                                    <input name="host" class="form-control" id="hostMicro" placeholder="e.g. Homo sapiens" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="cellLineMicro"><b>Cell Line:</b></label>
+                                    <input name="cell" class="form-control" id="cellLineMicro" placeholder="e.g. control" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="customAttributeMicro"><b>Custom Attributes:</b></label>
+                                    <input name="custom_attributes" class="form-control" id="customAttributeMicro" placeholder="e.g. control" type="text">
+                                </div>
+
+                                <div class = "mb-3" style="align-self: flex-end;">
+                                    <input type="submit" class = "button" id="customSearchSubmit" value="Search">
+                                </div>
+                            </form> 
+                        
+                    </details>
+                </div>
                     <p id="search_results" style="display: none;"><span id="numberStudies">0</span> studies found </p>
                 </div>
             </div>
@@ -185,13 +239,70 @@
             <!--Currently only returns results that contain the exact input to the searchbar-->
             <div class = "custom_attribute_search_database">
                 <div class = "card">
-                    <label><b>Filter by Custom Attributes</b></label>
-                    <div class = "d-flex align-items-center gap-3">
-                        <form id="custom_attribute_search_form_database" class="d-flex align-items-center gap-2">
-                            <input name="customAttributeData" class = "form-control" id="customAttributeData" placeholder="e.g. control" type="text">
-                            <input type="submit" class = "btn btn-outline-secondary" id="customSearchSubmitData" value="Search">
-                        </form> 
+                    <div>
+                        <details>
+                            <summary><b>Filters</b></summary>
+                            <form id="custom_attribute_search_form_database" class="d-flex flex-wrap gap-3">
+                                <div class = "mb-3">
+                                    <label for="sourceStudyData"><b>Source Study:</b></label>
+                                    <input name="source_study" class="form-control" id="sourceStudyData" placeholder="e.g. PRJEB8073" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="accessionData"><b>Accession:</b></label>
+                                    <input name="accession" class="form-control" id="accessionData" placeholder="e.g. SAMEA3178896" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="centerNameData"><b>Center Name:</b></label>
+                                    <input name="center_name" class="form-control" id="centerNameData" placeholder="e.g. BABRAHAM INSTITUTE" type="text">
+                                </div>
+                            
+                                <div class = "mb-3">
+                                    <label for="brokerData"><b>Broker Name:</b></label>
+                                    <input name="broker" class="form-control" id="brokerData" placeholder="e.g. control" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="titleData"><b>Title:</b></label>
+                                    <input name="title" class="form-control" id="titleData" placeholder="e.g. Growing Rep 1" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="taxonIdData"><b>Taxon ID:</b></label>
+                                    <input name="taxon_id" class="form-control" id="taxonIdData" placeholder="e.g. 9606" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="scientificNameData"><b>Scientific Name:</b></label>
+                                    <input name="scientific_name" class="form-control" id="scientificNameData" placeholder="e.g. Homo sapiens" type="text">
+                                </div>
+
+                                <div class = "mb-3">
+                                    <label for="hostData"><b>Host:</b></label>
+                                    <input name="host" class="form-control" id="hostData" placeholder="e.g. Homo sapiens" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="cellLineData"><b>Cell Line:</b></label>
+                                    <input name="cell" class="form-control" id="cellLineData" placeholder="e.g. control" type="text">
+                                </div>
+                                
+                                <div class = "mb-3">
+                                    <label for="customAttributeData"><b>Custom Attributes:</b></label>
+                                    <input name="custom_attributes" class="form-control" id="customAttributeData" placeholder="e.g. control" type="text">
+                                </div>
+                                
+                                <div class = "mb-3" style="align-self: flex-end;">
+                                    <input type="submit" class="btn btn-outline-secondary" id="customSearchSubmitData" value="Search">
+                                </div>
+                                
+                            </form> 
+                        </details>
                     </div>
+
+            <div class = "d-flex align-items-center gap-3">
+                </div>
                     <p id="search_results_data" style="display: none;"><span id="numberStudiesData">0</span> studies found </p>
                 </div>
             </div>
