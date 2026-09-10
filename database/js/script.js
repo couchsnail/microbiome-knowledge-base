@@ -29,6 +29,13 @@
     **Miscellaneous**
     - Error handling for database/HTML sides
     - General code clean-up and documentation
+
+    - Resolve column issues, yes/no disease
+    - GUI that's similar, metalogin (hold off, use Qiita GUI)
+    - Upload it ourselves, resolve disease and make the GUI cool
+    - Add diseases/distribution/etc.
+    - Cloudflare
+    - Perhaps some sort of admin permissions re: database access and permissions
 */
 
 //DuckDB code taken from official documentation: https://duckdb.org/docs/current/clients/wasm/instantiation

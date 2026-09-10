@@ -53,8 +53,8 @@
             <div class="container">
                 <div class="table_wrapper">
                     <table id=bio_table class="table table-striped mb-0 gap-3">
+                        <colgroup id = "study_table_body_colgroup"></colgroup>
                         <thead>
-                            <colgroup id = "study_table_body_colgroup"></colgroup>
                             <tr id="study_header_row"></tr>
                         </thead>
                         <tbody id="study_table_body"></tbody>
@@ -153,54 +153,48 @@
                                     <input type="submit" class = "button" id="customSearchSubmit" value="Search">
                                 </div>
                             </form> 
-                        
+                        </div>
                     </details>
                 </div>
                     <p id="search_results" style="display: none;"><span id="numberStudies">0</span> studies found </p>
                 </div>
-            </div>
 
-            <!--Toggle for hiding columns to improve table readability-->
-            <!--Will eventually be updated to hide these all by default; 
-                at present that functionality doesn't work-->
-            <div class="column_checkboxes">
-                <div class="card">
-                    <details>
-                        <summary><b>Hide Non-Vital Columns</b></summary>
-                        <!--Note: Fix column order later to match the vertical list-->
-                        <!--Assumes that all of these columns exist in a given CSV-->
-                        <div class="checkbox_group">
-                            <label><input type="checkbox" id="common_name_toggle" checked> common_name</label>
-                            <label><input type="checkbox" id="description_toggle" checked> description</label>
-                            <label><input type="checkbox" id="bio_material_toggle" checked> bio_material</label>
-                            <label><input type="checkbox" id="culture_collection_toggle" checked> culture_collection</label>
-                            <label><input type="checkbox" id="specimen_voucher_toggle" checked> specimen_voucher</label>
-                            <label><input type="checkbox" id="collected_by_toggle" checked> collected_by</label>
-                            <label><input type="checkbox" id="country_toggle" checked> country</label>
-                            <label><input type="checkbox" id="identified_by_toggle" checked> identified_by</label>
-                            <label><input type="checkbox" id="isolation_source_toggle" checked> isolation_source</label>
-                            <label><input type="checkbox" id="lat_lon_toggle" checked> lat_lon</label>
-                            <label><input type="checkbox" id="lab_host_toggle" checked> lab_host</label>
-                            <label><input type="checkbox" id="environmental_sample_toggle" checked> environmental_sample</label>
-                            <label><input type="checkbox" id="mating_type_toggle" checked> mating_type</label>
-                            <label><input type="checkbox" id="sex_toggle" checked> sex</label>
-                            <label><input type="checkbox" id="cell_type_toggle" checked> cell_type</label>
-                            <label><input type="checkbox" id="dev_stage_toggle" checked> dev_stage</label>
-                            <label><input type="checkbox" id="tissue_type_toggle" checked> tissue_type</label>
-                            <label><input type="checkbox" id="cultivar_toggle" checked> cultivar</label>
-                            <label><input type="checkbox" id="ecotype_toggle" checked> ecotype</label>
-                            <label><input type="checkbox" id="isolate_toggle" checked> isolate</label>
-                            <label><input type="checkbox" id="strain_toggle" checked> strain</label>
-                            <label><input type="checkbox" id="sub_species_toggle" checked> sub_species</label>
-                            <label><input type="checkbox" id="serotype_toggle" checked> serotype</label>
-                            <label><input type="checkbox" id="serovar_toggle" checked> serovar</label>
-                        </div>
-                    </details>
+                <div class="column_checkboxes">
+                    <div class="card">
+                        <details>
+                            <summary><b>Hide Non-Vital Columns</b></summary>
+                            <!--Note: Fix column order later to match the vertical list-->
+                            <!--Assumes that all of these columns exist in a given CSV-->
+                            <div class="checkbox_group">
+                                <label><input type="checkbox" id="common_name_toggle" checked> common_name</label>
+                                <label><input type="checkbox" id="description_toggle" checked> description</label>
+                                <label><input type="checkbox" id="bio_material_toggle" checked> bio_material</label>
+                                <label><input type="checkbox" id="culture_collection_toggle" checked> culture_collection</label>
+                                <label><input type="checkbox" id="specimen_voucher_toggle" checked> specimen_voucher</label>
+                                <label><input type="checkbox" id="collected_by_toggle" checked> collected_by</label>
+                                <label><input type="checkbox" id="country_toggle" checked> country</label>
+                                <label><input type="checkbox" id="identified_by_toggle" checked> identified_by</label>
+                                <label><input type="checkbox" id="isolation_source_toggle" checked> isolation_source</label>
+                                <label><input type="checkbox" id="lat_lon_toggle" checked> lat_lon</label>
+                                <label><input type="checkbox" id="lab_host_toggle" checked> lab_host</label>
+                                <label><input type="checkbox" id="environmental_sample_toggle" checked> environmental_sample</label>
+                                <label><input type="checkbox" id="mating_type_toggle" checked> mating_type</label>
+                                <label><input type="checkbox" id="sex_toggle" checked> sex</label>
+                                <label><input type="checkbox" id="cell_type_toggle" checked> cell_type</label>
+                                <label><input type="checkbox" id="dev_stage_toggle" checked> dev_stage</label>
+                                <label><input type="checkbox" id="tissue_type_toggle" checked> tissue_type</label>
+                                <label><input type="checkbox" id="cultivar_toggle" checked> cultivar</label>
+                                <label><input type="checkbox" id="ecotype_toggle" checked> ecotype</label>
+                                <label><input type="checkbox" id="isolate_toggle" checked> isolate</label>
+                                <label><input type="checkbox" id="strain_toggle" checked> strain</label>
+                                <label><input type="checkbox" id="sub_species_toggle" checked> sub_species</label>
+                                <label><input type="checkbox" id="serotype_toggle" checked> serotype</label>
+                                <label><input type="checkbox" id="serovar_toggle" checked> serovar</label>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
-
-            <!--Lets user export current file as a csv; perhaps add ability to custom name said file?-->
-            <button type="csvHtml5">Download as CSV</button>
 
             <!--Table for displaying CSV data in a table-->
             <!--Columns and rows are dynamically created-->
@@ -344,17 +338,17 @@
                         </div>
                     </details>
                 </div>
+            </div>
 
-                <div class="container">
-                    <div class="table_wrapper">
-                        <table id=data_table class="table table-striped mb-0 gap-3">
-                            <colgroup id="data_table_body_colgroup"></colgroup>
-                            <thead>
-                                <tr id="data_header_row"></tr>
-                            </thead>
-                            <tbody id="data_table_body"></tbody>
-                        </table>
-                    </div>
+            <div class="container">
+                <div class="table_wrapper">
+                    <table id=data_table class="table table-striped mb-0 gap-3">
+                        <colgroup id="data_table_body_colgroup"></colgroup>
+                        <thead>
+                            <tr id="data_header_row"></tr>
+                        </thead>
+                        <tbody id="data_table_body"></tbody>
+                    </table>
                 </div>
             </div>
 
