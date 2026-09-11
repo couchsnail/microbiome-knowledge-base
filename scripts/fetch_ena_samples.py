@@ -18,6 +18,8 @@ from dotenv import load_dotenv
 import urllib.parse
 from sqlalchemy import create_engine, inspect # need this to run 
 
+from scripts.classify_ena_samples import classifyDiseases
+
 # For security purposes, creates database and links to it
 # Documentation HERE: https://www.geeksforgeeks.org/python/connecting-postgresql-with-sqlalchemy-in-python/
 load_dotenv()
@@ -593,6 +595,8 @@ def run(accession_codes:str, fast=False):
     present_standard = [c for c in ORDERED_COLUMNS if c in df.columns]
     extra_cols = [c for c in df.columns if c not in set(ORDERED_COLUMNS)]
     df = df[present_standard + extra_cols]
+
+    df = classifyDiseases(df)
  
     # Drop columns that are entirely empty
     df = df.dropna(axis=1, how="all")
@@ -619,6 +623,7 @@ TO-DO: Prevent duplicates from being added
 def addToDatabase(df):
     # Need to avoid duplicates being added
     # Convert JSON => df
+    print(df)
     if((inspector.has_table("micro_data"))):
         columns_order = [
         'source_study', 'accession', 'alias', 'center_name', 'broker_name',
@@ -628,7 +633,7 @@ def addToDatabase(df):
         'lat_lon', 'lab_host', 'environmental_sample', 'mating_type', 'sex',
         'cell_type', 'dev_stage', 'tissue_type', 'cultivar', 'ecotype',
         'isolate', 'strain', 'sub_species', 'cell_line', 'serotype', 'serovar',
-        'custom_attributes',
+        'custom_attributes', 'disease', 'is_control', 'is_tumor', 'classification_evidence',
         'tier', 'review_reason', 'year_reviewed', 'journal', 'n_samples',
         'repository_link', 'paper_link', 'disease_evidence', 'disease_present',
         'disease_from_names', 'age_present', 'sex_present', 'antibiotic_present',
@@ -678,7 +683,7 @@ def retrieveDatabase():
             'lat_lon', 'lab_host', 'environmental_sample', 'mating_type', 'sex',
             'cell_type', 'dev_stage', 'tissue_type', 'cultivar', 'ecotype',
             'isolate', 'strain', 'sub_species', 'cell_line', 'serotype', 'serovar',
-            'custom_attributes',
+            'custom_attributes', 'disease', 'is_control', 'is_tumor', 'classification_evidence',
             'tier', 'review_reason', 'year_reviewed', 'journal', 'n_samples',
             'repository_link', 'paper_link', 'disease_evidence', 'disease_present',
             'disease_from_names', 'age_present', 'sex_present', 'antibiotic_present',
@@ -697,7 +702,7 @@ def downloadCSV(df):
     out_path = downloads / f'studydata{time}.csv'
     df.to_csv(out_path, index=False)
 
-
+"""
 def createTSV():
     if(inspector.has_table("micro_data")):
         df = pd.read_sql("SELECT * FROM micro_data",engine)
@@ -705,12 +710,14 @@ def createTSV():
         tsv_data = df.to_csv(sep="\t", index=False)
         return tsv_data
     return 
+"""
 
 # Qiita API Documentation: https://qiita.ucsd.edu/static/doc/html/dev/rest.html
 """
 Function for uploading a TSV to Qiita and such.
 
 Low-priority.
+"""
 """
 def uploadTSV():
     tsv_data = createTSV()
@@ -722,11 +729,12 @@ def uploadTSV():
         return response
     except:
         print("Failed to upload to Qiita")
-
+"""
 """
 Function for uploading a TSV to Qiita and such.
 
 Low-priority.
+"""
 """
 def testUpload():
     tsv_data = createTSV()
@@ -737,8 +745,9 @@ def testUpload():
     )
     print("Status code:", response.status_code)
     print("Response:", response.json())
+"""
 
 
 if __name__ == "__main__":
-    #main()
-    testUpload()
+    main()
+    # testUpload()

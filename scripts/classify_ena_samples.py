@@ -425,9 +425,9 @@ def parse_ca(value):
     except Exception:
         return {}
 
-
+"""
 def learn_study_diseases(vote_files, chunksize, log):
-    """Scan vote_files and return {study: dominant_disease} for disease-focused studies."""
+    # Scan vote_files and return {study: dominant_disease} for disease-focused studies.
     votes = defaultdict(Counter)
     study_size = Counter()
     study_case = Counter()
@@ -465,12 +465,52 @@ def learn_study_diseases(vote_files, chunksize, log):
         if focused and ((case_frac >= 0.15) or (n_total <= 300 and case_frac >= 0.30)):
             study_disease[s] = top_lab
     return study_disease, dict(study_size)
+"""
+
+def learn_study_diseases(df):
+    """Scan vote_files and return {study: dominant_disease} for disease-focused studies."""
+    votes = defaultdict(Counter)
+    study_size = Counter()
+    study_case = Counter()
+    cols = df.columns.to_list()
+
+    # usecols = ['accession', 'source_study', 'custom_attributes'] + STD_TEXT_FIELDS
+
+    for _, r in df.iterrows():
+        std = {c: r[c] for c in STD_TEXT_FIELDS if c in cols and pd.notna(r[c])}
+        ca = parse_ca(r.get('custom_attributes'))
+        disease, _, is_control, from_sample, _ = classify_row(std, ca)
+        study = r['source_study']
+        study_size[study] += 1
+        if from_sample and disease and is_control is False and disease != NO_DISEASE:
+            votes[study][disease] += 1
+            study_case[study] += 1
+        # log(f'  voted over {os.path.basename(fn)}')
+
+    study_disease = {}
+    for s, ctr in votes.items():
+        n_case = study_case[s]
+        n_total = study_size[s]
+        case_frac = n_case / n_total if n_total else 0
+        most = ctr.most_common()
+        top_lab, top_n = most[0]
+        top_share = top_n / n_case if n_case else 0
+        n_distinct = len(most)
+        # prefer a specific disease over generic 'cancer' when well supported
+        if top_lab == 'cancer' and len(most) > 1 and most[1][1] >= max(3, 0.2 * top_n):
+            top_lab = most[1][0]
+        # GATE: only propagate for a focused case/control study -- a single
+        # disease dominates AND it isn't a mixed-condition population cohort.
+        focused = (top_share >= 0.55 and n_distinct <= 4)
+        if focused and ((case_frac >= 0.15) or (n_total <= 300 and case_frac >= 0.30)):
+            study_disease[s] = top_lab
+    return study_disease
 
 
 # ============================================================================
 # PASS 2 -- write augmented output
 # ============================================================================
-
+"""
 def finalize(std, ca, study, study_disease):
     disease, is_tumor, is_control, _, ev = classify_row(std, ca)
     final = disease
@@ -485,7 +525,23 @@ def finalize(std, ca, study, study_disease):
         final = final if final in CANCER_LABELS else 'cancer'
     yn = {True: 'yes', False: 'no', None: 'unknown'}
     return final, yn[is_control], yn[is_tumor], ev
+"""
 
+# modified finalize
+def finalize(std, ca, study, study_disease):
+    disease, is_tumor, is_control, _, ev = classify_row(std, ca)
+    final = disease
+    sd = study_disease.get(study)
+    if not final:
+        if sd:
+            final = sd
+            ev = (ev + '; ' if ev else '') + f'disease<-study_vote({sd})'
+        else:
+            final = NO_DISEASE
+    if is_tumor is True and final not in CANCER_LABELS:
+        final = final if final in CANCER_LABELS else 'cancer'
+    yn = {True: 'yes', False: 'no', None: 'unknown'}
+    return final, yn[is_control], yn[is_tumor], ev
 
 def classify_chunk(chunk, study_disease):
     cols = list(chunk.columns)
@@ -653,6 +709,10 @@ def main(argv=None):
     log('  output:')
     for o in outputs:
         log(f'     {o}')
+
+def classifyDiseases(df):
+    study_disease = learn_study_diseases(df)
+    return classify_chunk(df, study_disease)
 
 
 if __name__ == '__main__':

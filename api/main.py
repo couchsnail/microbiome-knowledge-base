@@ -32,7 +32,7 @@
    """
 from fastapi import FastAPI
 from ena_accessor import fetch
-from scripts.fetch_ena_samples import run, addToDatabase, retrieveDatabase, downloadCSV, createTSV # note: immensely janky right now
+from scripts.fetch_ena_samples import run, addToDatabase, retrieveDatabase, downloadCSV# note: immensely janky right now
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
