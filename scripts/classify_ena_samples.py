@@ -556,8 +556,8 @@ def classify_chunk(chunk, study_disease):
     chunk['is_control'] = ctl
     chunk['is_tumor'] = tum
     chunk['classification_evidence'] = evd
-    return chunk[cols + ['disease', 'is_control', 'is_tumor', 'classification_evidence']]
-
+    #return chunk[cols + ['disease', 'is_control', 'is_tumor', 'classification_evidence']]
+    return chunk
 
 def write_combined(input_files, study_disease, out_path, compress, chunksize, log):
     """Write one combined CSV (optionally gzip/zip compressed). Returns aggregate counters."""
