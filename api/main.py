@@ -81,6 +81,8 @@ Filters returns them.
 @app.get("/fetch/{accession}")
 def fetch_accession(accession: str):
     df = run(accession_codes=accession) 
+    df = df.astype(object).where(pd.notnull(df), None)
+    print("Returning df to user")
     return {"status": "ok", "accession": accession, "data": df.to_dict(orient="records")}
     # return data
 
