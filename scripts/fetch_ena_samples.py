@@ -596,11 +596,18 @@ def run(accession_codes:str, fast=False):
     extra_cols = [c for c in df.columns if c not in set(ORDERED_COLUMNS)]
     df = df[present_standard + extra_cols]
 
+    print("Classifying diseases")
     df = classifyDiseases(df)
+    print("Diseases classified")
  
     # Drop columns that are entirely empty
+    print("Dropping empty columns")
     df = df.dropna(axis=1, how="all")
- 
+
+    print("Adding additional age/sex markers")
+    df = addMarkers(df)
+    print("Additional markers added")
+
     print(f"\n\nTotal records fetched: {len(df)}")
     print(f"Columns found: {df.columns.tolist()}\n")
     print(df.head())
@@ -611,6 +618,23 @@ def run(accession_codes:str, fast=False):
     # Only delete the checkpoint once the CSV is safely written
     delete_checkpoint(label)
 
+    return df
+
+
+def addMarkers(df):
+    print("Testing if age present is true")
+    """df['age_present'] = 'TRUE'
+    if 'age' in df.columns:
+        df.loc[(df['age'].isnull() or df['age'].isnan()),'age_present'] = 'FALSE'
+    else:
+        df['age_present'] = 'FALSE'"""
+
+    print("Testing if sex present is true")
+    df['sex_present'] = 'TRUE'
+    if 'age' in df.columns:
+        df.loc[(df['sex'].isnull() or df['age'].isnan()),'sex_present'] = 'FALSE'
+    else:
+        df['sex_present'] = 'FALSE'
     return df
 
 """

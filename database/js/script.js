@@ -10,6 +10,7 @@
     - Some sort of read/write/review thing (low priority)
     - Add somewhere where like these updated rows can be added but also edited if need be
     - Fix search on Database Side (high priority)
+    - Adjust checkpoints for parsing study data
     
     **Visual/HTML Side**
     - Add visual indicator to show why certain table rows were pulled up for custom search
@@ -36,6 +37,10 @@
     - Add diseases/distribution/etc.
     - Cloudflare
     - Perhaps some sort of admin permissions re: database access and permissions
+    - Fuse some columns together
+    - Keep disease/agent/sex
+    - Where did Amplicon come from?
+    - Fix the scripts and such for this sort of thing (modify)
 */
 
 //DuckDB code taken from official documentation: https://duckdb.org/docs/current/clients/wasm/instantiation
