@@ -52,6 +52,8 @@ USAGE
     # the WHOLE dataset so labels stay consistent with earlier batches
     python classify_ena_samples.py data/part01*.csv -o out/new.csv \
         --vote-scope "data/part0*.csv" "data/part01*.csv"
+    
+    # Anyway in the classify function add all that other fun stuff
 
 The script streams the files in chunks, so memory use stays low even on
 multi-hundred-MB inputs.
@@ -425,7 +427,6 @@ def parse_ca(value):
     except Exception:
         return {}
 
-"""
 def learn_study_diseases(vote_files, chunksize, log):
     # Scan vote_files and return {study: dominant_disease} for disease-focused studies.
     votes = defaultdict(Counter)
@@ -465,9 +466,8 @@ def learn_study_diseases(vote_files, chunksize, log):
         if focused and ((case_frac >= 0.15) or (n_total <= 300 and case_frac >= 0.30)):
             study_disease[s] = top_lab
     return study_disease, dict(study_size)
-"""
 
-def learn_study_diseases(df):
+def learn_study_diseases_df(df):
     """Scan vote_files and return {study: dominant_disease} for disease-focused studies."""
     votes = defaultdict(Counter)
     study_size = Counter()
@@ -543,6 +543,7 @@ def finalize(std, ca, study, study_disease):
     yn = {True: 'yes', False: 'no', None: 'unknown'}
     return final, yn[is_control], yn[is_tumor], ev
 
+"""
 def classify_chunk(chunk, study_disease):
     cols = list(chunk.columns)
     dis, ctl, tum, evd = [], [], [], []
@@ -553,6 +554,34 @@ def classify_chunk(chunk, study_disease):
         dis.append(d); ctl.append(c); tum.append(t); evd.append(e)
     chunk = chunk.copy()
     chunk['disease'] = dis
+    chunk['is_control'] = ctl
+    chunk['is_tumor'] = tum
+    chunk['classification_evidence'] = evd
+    return chunk[cols + ['disease', 'is_control', 'is_tumor', 'classification_evidence']]
+"""
+
+# Modified classify_chunk
+
+def classify_chunk(chunk, study_disease):
+    cols = list(chunk.columns)
+    dis, ctl, tum, evd = [], [], [], []
+    for _, r in chunk.iterrows():
+        std = {c: r[c] for c in STD_TEXT_FIELDS if c in cols and pd.notna(r[c])}
+        ca = parse_ca(r.get('custom_attributes'))
+        d, c, t, e = finalize(std, ca, r['source_study'], study_disease)
+        dis.append(d); ctl.append(c); tum.append(t); evd.append(e)
+    chunk = chunk.copy()
+    chunk['disease'] = dis 
+
+    for i, row in chunk.iterrows():
+        if(row['disease'] == NO_DISEASE):
+            chunk.loc[i, 'disease_evidence'] = 'FALSE'
+            chunk.loc[i,'disease_present'] = 'FALSE'
+            chunk.loc[i,'disease_from_names'] = 'FALSE'
+        else:
+            chunk.loc[i,'disease_evidence'] = 'TRUE'
+            chunk.loc[i,'disease_present'] = 'TRUE'
+            chunk.loc[i,'disease_from_names'] = 'TRUE'
     chunk['is_control'] = ctl
     chunk['is_tumor'] = tum
     chunk['classification_evidence'] = evd
@@ -711,7 +740,7 @@ def main(argv=None):
         log(f'     {o}')
 
 def classifyDiseases(df):
-    study_disease = learn_study_diseases(df)
+    study_disease = learn_study_diseases_df(df)
     return classify_chunk(df, study_disease)
 
 
