@@ -40,9 +40,6 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
-# Website loading test
-app.mount("/", StaticFiles(directory="database", html=True), name="static")
-
 # Default base model
 @app.get("/")
 def read_root():
@@ -121,6 +118,9 @@ retrieveDatabase() from fetch_ena_samples.
 def get_database():
     results = retrieveDatabase()
     return {"status": "ok", "data": results}
+
+# Website loading test
+app.mount("/", StaticFiles(directory="database", html=True), name="static")
 
 # Debugger
 if __name__ == '__main__':
