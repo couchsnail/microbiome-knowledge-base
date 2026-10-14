@@ -281,8 +281,14 @@ async function getAccession(accessionCode)
         console.log("Database connected");
 
         //let query_string = "CREATE TABLE IF NOT EXISTS study_data AS SELECT * FROM read_json_auto(?," + result.data + ");";
+        console.log("result.data length:", result.data.length);
+        console.log("result.data first row:", result.data[0]);
+
         let dataStr = JSON.stringify(result.data);
         console.log("JSON stringified");
+        console.log("dataStr length:", dataStr.length);
+        console.log("dataStr preview:", dataStr.substring(0, 300));
+
         sessionStorage.setItem("studyData", dataStr);
         console.log("Saved in session storage");
         await db.registerFileText("study_data.json", dataStr);
