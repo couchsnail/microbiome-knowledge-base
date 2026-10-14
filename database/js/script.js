@@ -291,8 +291,8 @@ async function getAccession(accessionCode)
 
         let dataStr = JSON.stringify(result.data);
         console.log("JSON stringified");
-        console.log("Data length:", dataArray.length);
-        console.log("Data preview:", JSON.stringify(dataArray.slice(0, 2)));
+        //console.log("Data length:", dataArray.length);
+        //console.log("Data preview:", JSON.stringify(dataArray.slice(0, 2)));
 
         studyData = dataStr;
         console.log("Saved in session storage");
