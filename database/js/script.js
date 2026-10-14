@@ -386,6 +386,7 @@ async function getAccession(accessionCode)
 async function addToDatabase()
 {
     let studyInfo = studyData;
+    console.log("StudyInfo: " + studyData);
 
     if(studyInfo == "" || !studyInfo)
     {
@@ -412,14 +413,16 @@ async function addToDatabase()
         const result = await response.json();
         
         console.log(JSON.stringify(result, null, 2));
+
+        console.log("Loading database");
+        await loadDatabase();
         //alert("Study data uploaded to database.");
     }
     catch(error)
     {
+        console.log("It goes wrong here");
         console.log(error);
     }
-
-    await loadDatabase();
 }
 
 /* This function allows the user to download the study data in the DuckDB database
