@@ -70,6 +70,9 @@ const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay'
 const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
 const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
 
+const studyData = null;
+const databaseInfo = null;
+
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
 //Done by default at the start
@@ -115,7 +118,9 @@ async function loadDatabase()
             console.log("dataStr empty");
             return;
         }
-        sessionStorage.setItem("databaseInfo", dataStr);
+        
+        databaseInfo = dataStr; 
+
         console.log("Session storage set");
 
         console.log("Database converted to str");
@@ -289,7 +294,7 @@ async function getAccession(accessionCode)
         console.log("Data length:", dataArray.length);
         console.log("Data preview:", JSON.stringify(dataArray.slice(0, 2)));
 
-        sessionStorage.setItem("studyData", dataStr);
+        studyData = dataStr;
         console.log("Saved in session storage");
         await db.registerFileText("study_data.json", dataStr);
         console.log("Registered as file text");
@@ -380,7 +385,7 @@ async function getAccession(accessionCode)
 
 async function addToDatabase()
 {
-    let studyInfo = sessionStorage.getItem("studyData"); 
+    let studyInfo = studyData;
 
     if(studyInfo == "" || !studyInfo)
     {
@@ -428,7 +433,7 @@ document.getElementById("study_csv_download").addEventListener("click", async(e)
     e.preventDefault();
     console.log("Downloading as CSV file");
 
-    let studyInfo = sessionStorage.getItem("studyData"); 
+    studyInfo = studyData;
 
     if(studyInfo == "" || !studyInfo)
     {
@@ -1293,7 +1298,7 @@ document.getElementById("database_csv_download").addEventListener("click", async
     e.preventDefault();
     console.log("Downloading database as CSV file");
 
-    let studyInfo = sessionStorage.getItem("databaseInfo"); 
+    let studyInfo = databaseInfo;
 
     if(studyInfo == "" || !studyInfo)
     {
