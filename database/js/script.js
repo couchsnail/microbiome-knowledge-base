@@ -70,8 +70,8 @@ const study_table_body_states = {'currentPage': 1, 'totalPages': 1, 'rowDisplay'
 const micro_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
 const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay': 20, 'searchParameters':""};
 
-const studyData = null;
-const databaseInfo = null;
+let studyData = null;
+let databaseInfo = null;
 
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
