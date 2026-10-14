@@ -101,7 +101,7 @@ async function loadDatabase()
 {
     try
     {
-        const response = await fetch("http://127.0.0.1:8000/database");
+        const response = await fetch("http://54.183.209.146:8000/database");
         console.log(response);
 
         let result = await response.json();
@@ -267,7 +267,7 @@ async function getAccession(accessionCode)
     try
     {
         console.log("Response successful");
-        const responseString = "http://127.0.0.1:8000/fetch/" + accessionCode;
+        const responseString = "http://54.183.209.146:8000/fetch/" + accessionCode;
         const response = await fetch(responseString);
         let result = await response.json();
         console.log("Response result received");
@@ -292,6 +292,10 @@ async function getAccession(accessionCode)
         await conn.query('DROP TABLE IF EXISTS study_data;') 
         console.log("Table dropped");
         //await conn.query(`CREATE TABLE study_data AS SELECT * FROM read_json_auto('study_data.json');`);
+
+	console.log("dataStr length:", dataStr.length);
+	console.log("dataStr preview:", dataStr.substring(0, 200));
+
         await conn.insertJSONFromPath("study_data.json", {
             name: "study_data",
             schema: "main",
@@ -384,7 +388,7 @@ async function addToDatabase()
         let data = JSON.parse(studyInfo); 
         console.log("Data parsed");
 
-        const response = await fetch("http://127.0.0.1:8000/submit", 
+        const response = await fetch("http://54.183.209.146:8000/submit", 
         {
             method: "POST",
             headers: 
@@ -431,7 +435,7 @@ document.getElementById("study_csv_download").addEventListener("click", async(e)
         let data = JSON.parse(studyInfo); 
         console.log("Data parsed");
 
-        const response = await fetch("http://127.0.0.1:8000/download", 
+        const response = await fetch("http://54.183.209.146:8000/download", 
         {
             method: "POST",
             headers: 

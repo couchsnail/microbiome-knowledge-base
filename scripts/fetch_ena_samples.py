@@ -22,7 +22,7 @@ from scripts.classify_ena_samples import classifyDiseases
 
 # For security purposes, creates database and links to it
 # Documentation HERE: https://www.geeksforgeeks.org/python/connecting-postgresql-with-sqlalchemy-in-python/
-load_dotenv()
+load_dotenv('/home/ubuntu/microbiome-knowledge-base/.env')
 
 password = urllib.parse.quote_plus(os.getenv("DB_PASSWORD"))
 user = os.getenv("DB_USER")

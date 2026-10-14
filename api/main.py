@@ -36,8 +36,12 @@ from scripts.fetch_ena_samples import run, addToDatabase, retrieveDatabase, down
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+# Website loading test
+app.mount("/", StaticFiles(directory="database", html=True), name="static")
 
 # Default base model
 @app.get("/")
