@@ -289,8 +289,9 @@ async function getAccession(accessionCode)
         console.log("result.data length:", result.data.length);
         console.log("result.data first row:", result.data[0]);
 
-        /*let dataStr = JSON.stringify(result.data);
-        console.log("JSON stringified");*/
+        let dataStr = JSON.stringify(result.data);
+        console.log("JSON stringified");
+        
         //console.log("Data length:", dataArray.length);
         //console.log("Data preview:", JSON.stringify(dataArray.slice(0, 2)));
 
