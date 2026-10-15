@@ -397,7 +397,8 @@ async function addToDatabase()
 
     try
     {
-        let data = JSON.parse(studyInfo); 
+        //let data = JSON.parse(studyInfo); 
+        let data = studyInfo;
         console.log("Data parsed");
 
         const response = await fetch("http://54.183.209.146:8000/submit", 
@@ -446,7 +447,8 @@ document.getElementById("study_csv_download").addEventListener("click", async(e)
 
     try
     {
-        let data = JSON.parse(studyInfo); 
+        //let data = JSON.parse(studyInfo); 
+        let data = studyInfo;
         console.log("Data parsed");
 
         const response = await fetch("http://54.183.209.146:8000/download", 
@@ -1311,7 +1313,8 @@ document.getElementById("database_csv_download").addEventListener("click", async
 
     try
     {
-        let data = JSON.parse(studyInfo); 
+        //let data = JSON.parse(studyInfo); 
+        let data = studyInfo;
         console.log("Data parsed");
 
         const response = await fetch("http://127.0.0.1:8000/download", 
