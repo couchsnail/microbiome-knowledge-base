@@ -118,7 +118,7 @@ def get_database():
         results = retrieveDatabase()
         return {"status": "ok", "data": results}
     except:
-        return {"status": "ok", "data":[]}
+        return {"status": "ok", "data":{}}
 
 # Website loading test
 app.mount("/", StaticFiles(directory="database", html=True), name="static")

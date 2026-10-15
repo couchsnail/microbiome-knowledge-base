@@ -648,8 +648,7 @@ def addToDatabase(df):
     # Need to avoid duplicates being added
     # Convert JSON => df
     print(df)
-    if((inspector.has_table("micro_data"))):
-        columns_order = [
+    columns_order = [
         'source_study', 'accession', 'alias', 'center_name', 'broker_name',
         'title', 'taxon_id', 'scientific_name', 'common_name', 'description',
         'bio_material', 'culture_collection', 'specimen_voucher', 'collected_by',
@@ -665,8 +664,9 @@ def addToDatabase(df):
         'age_key', 'sex_key', 'disease_key', 'reviewer', 'reviewer_agrees', 'reviewer_notes'
         ]
 
-        df = df.reindex(columns=columns_order)
-        df.to_sql("micro_data",engine,if_exists="append",index=False)
+    df = df.reindex(columns=columns_order)
+    df.to_sql("micro_data",engine,if_exists="append",index=False)
+
 
 """
 pd.read_sql documentation: https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html
