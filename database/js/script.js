@@ -112,14 +112,13 @@ async function loadDatabase()
 
         console.log("Result data: " + result.data);
 
-        /*let dataStr = JSON.stringify(result.data);
+        let dataStr = JSON.stringify(result.data);
         if(dataStr == "")
         {
             console.log("dataStr empty");
             return;
         }
-        
-        databaseInfo = dataStr; */
+       
         databaseInfo = result.data;
         console.log("Session storage set");
 
@@ -291,7 +290,7 @@ async function getAccession(accessionCode)
 
         let dataStr = JSON.stringify(result.data);
         console.log("JSON stringified");
-        
+
         //console.log("Data length:", dataArray.length);
         //console.log("Data preview:", JSON.stringify(dataArray.slice(0, 2)));
 
