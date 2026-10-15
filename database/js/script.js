@@ -140,7 +140,8 @@ async function loadDatabase()
             schema: "main",
             create: true
         });
-        
+        console.log("Created JSON from path here"); 
+
         let totalRows = await conn.query("SELECT COUNT(*) AS count FROM complete_database");
         let rows = totalRows.toArray()[0].count;
         console.log("Rows: " + rows);
