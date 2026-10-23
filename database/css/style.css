@@ -1,4 +1,5 @@
 /*Style sheet: Informs the HTML how to render various elements*/
+/* Make it not look like AI */
 
 body
 {
@@ -8,6 +9,7 @@ body
     padding-left: 20px;
     padding-right: 20px;
     width: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 h1, p
