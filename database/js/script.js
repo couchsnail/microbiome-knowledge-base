@@ -72,6 +72,7 @@ const data_table_body_states =  {'currentPage': 1, 'totalPages': 1, 'rowDisplay'
 
 let studyData = null;
 let databaseInfo = null;
+let studyInfo = null; 
 
 //Function for hiding/showing tabs
 //Taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp
