@@ -162,9 +162,3 @@ th.hidden, td.hidden
     text-align:center;
 }
 
-.button:hover, #next_page:hover, #prev_page:hover
-{
-    background-color: #125450;
-    border-color: #125450;
-}
-
