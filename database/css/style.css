@@ -41,6 +41,7 @@ p
   background-color: inherit;
   float: left;
   border: none;
+  border-radius:999px;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;

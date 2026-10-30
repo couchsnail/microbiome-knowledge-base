@@ -75,6 +75,8 @@ class DataFrame(BaseModel):
 Used for accession code fetching using the public ENA API.
 Calls the run function from fetch_ena_samples to process and find the studies, then
 Filters returns them. 
+
+Make sure this still works even if nothing is returned.
 """
 @app.get("/fetch/{accession}")
 def fetch_accession(accession: str):
