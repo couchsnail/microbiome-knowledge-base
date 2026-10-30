@@ -17,6 +17,13 @@ h1, p
     margin-left: 0;
     margin-right: 0;
     text-align: left; 
+    font-size:1.8rem;
+    font-weight:650;
+}
+
+p
+{
+    line-height:1.6;
 }
 
 /* Basic tab style and layout taken from here: https://www.w3schools.com/howto/howto_js_tabs.asp */
@@ -136,6 +143,13 @@ th.hidden, td.hidden
 #next_page, #prev_page
 {
     display: none;
+    background-color: #176b67;
+    color:white;
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .centered_table_output
