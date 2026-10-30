@@ -146,7 +146,7 @@ th.hidden, td.hidden
     display: none;
     background-color: #176b67;
     color:white;
-    border-radius: 6px;
+    border-radius: 999px;
     padding: 0.6rem 1rem;
     font-size: 0.95rem;
     cursor: pointer;
