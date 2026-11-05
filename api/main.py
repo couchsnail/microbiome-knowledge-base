@@ -37,6 +37,8 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
+import io
 
 app = FastAPI()
 
@@ -104,9 +106,23 @@ Used for downloading information as CSV files.
 """
 @app.post("/download")
 def download(data: DataFrame):
-    df = pd.DataFrame(data.dataframe)
+    """df = pd.DataFrame(data.dataframe)
     downloadCSV(df)
-    return {"status": "ok"}
+    return {"status": "ok"}"""
+    df = pd.DataFrame(data.dataframe)
+
+    csv_buffer = io.StringIO()
+    df.to_csv(csv_buffer, index=False)
+    csv_buffer.seek(0)
+
+    return StreamingResponse(
+        iter([csv_buffer.getvalue()]),
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": "attachment; filename=studydata.csv",
+            "status": "ok"
+        }
+    )
 
 
 """
