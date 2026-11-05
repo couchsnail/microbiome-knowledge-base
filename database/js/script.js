@@ -439,7 +439,7 @@ document.getElementById("study_csv_download").addEventListener("click", async(e)
     e.preventDefault();
     console.log("Downloading as CSV file");
 
-    studyInfo = studyData;
+    studyInfo = studyData; //okay why are you not working 
 
     if(studyInfo == "" || !studyInfo)
     {
@@ -463,7 +463,15 @@ document.getElementById("study_csv_download").addEventListener("click", async(e)
             body: JSON.stringify({ dataframe: data })
         });
 
-        const result = await response.json();
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        a.href = url;
+        a.download = "studydata.csv";
+        a.click();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
         
         console.log(JSON.stringify(result, null, 2));
         //alert("Study data uploaded to database.");
