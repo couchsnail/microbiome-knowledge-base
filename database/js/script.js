@@ -89,6 +89,9 @@ function openTab(event, tabName)
         tabContent[i].style.display = "none";
     }
 
+    console.log("CSV tab display:", document.getElementById("view_csv").style.display);
+    console.log("Database tab display:", document.getElementById("view_database").style.display);
+
     let tabLinks = document.getElementsByClassName("tablinks");
     let linLen = tabLinks.length;
     for (i = 0; i < linLen; ++i) 
