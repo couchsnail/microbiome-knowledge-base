@@ -106,6 +106,15 @@ function openTab(event, tabName)
     console.log("Selected tab display:", document.getElementById(tabName).style.display);
     console.log("CSV tab display:", document.getElementById("view_csv").style.display);
     console.log("Database tab display:", document.getElementById("view_database").style.display);
+
+    let debug = document.createElement("pre");
+
+    debug.textContent =
+    "Database element: " + document.getElementById("view_database") +
+    "\nTable element: " + document.querySelector("#view_database table") +
+    "\nTable display: " + document.querySelector("#view_database table")?.style.display;
+
+    document.body.appendChild(debug);
 }
 
 /* This function loads the database */
