@@ -107,23 +107,21 @@ function openTab(event, tabName)
     console.log("CSV tab display:", document.getElementById("view_csv").style.display);
     console.log("Database tab display:", document.getElementById("view_database").style.display);
 
-    debug = document.createElement("pre");
-
     let dbTab = document.getElementById("view_database");
-    let dbTable = dbTab.querySelector("table");
+let dbTable = dbTab.querySelector("table");
 
-    let csvTab = document.getElementById("view_csv");
-    let csvTable = csvTab.querySelector("table");
+let csvTab = document.getElementById("view_csv");
+let csvTable = csvTab.querySelector("table");
 
-    let debug = document.getElementById("debug_output");
+let debug = document.getElementById("debug_output");
 
-    if (!debug) {
-        debug = document.createElement("pre");
-        debug.id = "debug_output";
-        document.body.appendChild(debug);
-    }
+if (!debug) {
+    debug = document.createElement("pre");
+    debug.id = "debug_output";
+    document.body.appendChild(debug);
+}
 
-    debug.textContent =
+debug.textContent =
     "DATABASE TABLE\n" +
     "Rows: " + dbTable.rows.length +
     "\nDisplay: " + getComputedStyle(dbTable).display +
