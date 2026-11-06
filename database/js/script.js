@@ -107,14 +107,33 @@ function openTab(event, tabName)
     console.log("CSV tab display:", document.getElementById("view_csv").style.display);
     console.log("Database tab display:", document.getElementById("view_database").style.display);
 
-    let debug = document.createElement("pre");
+    debug = document.createElement("pre");
+
+    let dbTab = document.getElementById("view_database");
+    let dbTable = dbTab.querySelector("table");
+
+    let csvTab = document.getElementById("view_csv");
+    let csvTable = csvTab.querySelector("table");
+
+    let debug = document.getElementById("debug_output");
+
+    if (!debug) {
+        debug = document.createElement("pre");
+        debug.id = "debug_output";
+        document.body.appendChild(debug);
+    }
 
     debug.textContent =
-    "Database element: " + document.getElementById("view_database") +
-    "\nTable element: " + document.querySelector("#view_database table") +
-    "\nTable display: " + document.querySelector("#view_database table")?.style.display;
-
-    document.body.appendChild(debug);
+    "DATABASE TABLE\n" +
+    "Rows: " + dbTable.rows.length +
+    "\nDisplay: " + getComputedStyle(dbTable).display +
+    "\nVisibility: " + getComputedStyle(dbTable).visibility +
+    "\nWidth: " + dbTable.getBoundingClientRect().width +
+    "\n\nCSV TABLE\n" +
+    "Rows: " + csvTable.rows.length +
+    "\nDisplay: " + getComputedStyle(csvTable).display +
+    "\nVisibility: " + getComputedStyle(csvTable).visibility +
+    "\nWidth: " + csvTable.getBoundingClientRect().width;
 }
 
 /* This function loads the database */
