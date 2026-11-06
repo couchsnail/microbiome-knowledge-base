@@ -101,6 +101,11 @@ function openTab(event, tabName)
 
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.className += " active";
+
+    console.log("Selected tab:", tabName);
+    console.log("Selected tab display:", document.getElementById(tabName).style.display);
+    console.log("CSV tab display:", document.getElementById("view_csv").style.display);
+    console.log("Database tab display:", document.getElementById("view_database").style.display);
 }
 
 /* This function loads the database */
