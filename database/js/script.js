@@ -1337,9 +1337,15 @@ document.getElementById("database_csv_download").addEventListener("click", async
             body: JSON.stringify({ dataframe: data })
         });
 
-        const result = await response.json();
-        
-        console.log(JSON.stringify(result, null, 2));
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        a.href = url;
+        a.download = "studydata.csv";
+        a.click();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
         //alert("Study data uploaded to database.");
     }
     catch(error)
