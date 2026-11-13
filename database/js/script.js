@@ -927,10 +927,11 @@ function displayHTML(result, tableBody, headerName)
     {
         let coli = document.createElement("col");
         coli.id = "col_" + columns[i] + "_" + tableBody;
-        console.log("Generated column ID:", coli.id);
-        console.log("Looking for:", document.getElementById("col_common_name_micro_table_body"));
         //console.log("coli.id: " + coli.id);
         colgroup.appendChild(coli);
+        console.log("Generated column ID:", coli.id);
+        console.log("Looking for:", document.getElementById("col_common_name_micro_table_body"));
+
         thead.insertAdjacentHTML("beforeend", "<th>" + columns[i] + "</th>");
     }
 
