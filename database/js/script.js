@@ -914,6 +914,7 @@ function displayHTML(result, tableBody, headerName)
     let columns = result.schema.fields.map(f => f.name);
 
     let colgroup = document.getElementById(tableBody + "_colgroup");
+    colgroup.innerHTML = "";
 
     //Dynamically builds column headers
     //colgroup documentation: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/colgroup
@@ -926,6 +927,8 @@ function displayHTML(result, tableBody, headerName)
     {
         let coli = document.createElement("col");
         coli.id = "col_" + columns[i] + "_" + tableBody;
+        console.log("Generated column ID:", coli.id);
+        console.log("Looking for:", document.getElementById("col_common_name_micro_table_body"));
         //console.log("coli.id: " + coli.id);
         colgroup.appendChild(coli);
         thead.insertAdjacentHTML("beforeend", "<th>" + columns[i] + "</th>");
@@ -1035,11 +1038,11 @@ function elementToggle(checkbox_id, checkbox_name, tableBody, headerName)
         {
             document.getElementById("col_" + checkbox_name + "_" + tableBody).style.visibility = "";
         }*/
-       let column = document.getElementById(checkbox_name + "_" + tableBody);
+       let column = document.getElementById("col_" + checkbox_name + "_" + tableBody);
 
         if (!column)
         {
-            console.log("Missing column:", checkbox_name + "_" + tableBody);
+            console.log("Missing column:", "col_" + checkbox_name + "_" + tableBody);
             return;
         }
 
