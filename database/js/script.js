@@ -273,6 +273,10 @@ document.getElementById("dataTab").addEventListener("click", async(e) =>
     openTab(e, "view_database");
 
     await loadDatabase();
+
+    console.log("CSV table count:", document.querySelectorAll("#micro_table").length);
+    console.log("CSV table parent:", document.getElementById("micro_table").parentElement.parentElement.parentElement.id);
+    console.log("Database table count:", document.querySelectorAll("#data_table").length);
 });
 
 document.getElementById("defaultOpen").click();
