@@ -270,6 +270,7 @@ document.getElementById("csvTab").addEventListener("click", function(e)
 
 document.getElementById("dataTab").addEventListener("click", async(e) =>
 {
+    console.log("Opening database tab");
     openTab(e, "view_database");
 
     await loadDatabase();
