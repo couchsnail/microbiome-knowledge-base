@@ -1035,11 +1035,11 @@ function elementToggle(checkbox_id, checkbox_name, tableBody, headerName)
         {
             document.getElementById("col_" + checkbox_name + "_" + tableBody).style.visibility = "";
         }*/
-       let column = document.getElementById("col_" + checkbox_name + "_" + tableBody);
+       let column = document.getElementById(checkbox_name + "_" + tableBody);
 
         if (!column)
         {
-            console.log("Missing column:", "col_" + checkbox_name + "_" + tableBody);
+            console.log("Missing column:", checkbox_name + "_" + tableBody);
             return;
         }
 
