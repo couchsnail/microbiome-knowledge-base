@@ -108,10 +108,10 @@ function openTab(event, tabName)
     console.log("Database tab display:", document.getElementById("view_database").style.display);
 
     let dbTab = document.getElementById("view_database");
-let dbTable = dbTab.querySelector("table");
+let dbTable = dbTab.querySelector("");
 
 let csvTab = document.getElementById("view_csv");
-let csvTable = csvTab.querySelector("table");
+let csvTable = csvTab.querySelector("micro_table");
 
 let debug = document.getElementById("debug_output");
 
@@ -1027,14 +1027,30 @@ function elementToggle(checkbox_id, checkbox_name, tableBody, headerName)
         }*/
 
         //console.log("Adjusting: " + "col_" + checkbox_name + "_" + tableBody);
-        if(this.checked)
+        /*if(this.checked)
         {
             document.getElementById("col_" + checkbox_name + "_" + tableBody).style.visibility = "collapse";
         }
         else
         {
             document.getElementById("col_" + checkbox_name + "_" + tableBody).style.visibility = "";
-        }   
+        }*/
+       let column = document.getElementById("col_" + checkbox_name + "_" + tableBody);
+
+        if (!column)
+        {
+            console.log("Missing column:", "col_" + checkbox_name + "_" + tableBody);
+            return;
+        }
+
+        if(this.checked)
+        {
+            column.style.visibility = "collapse";
+        }
+        else
+        {
+            column.style.visibility = "";
+        }
     })
 }
 
