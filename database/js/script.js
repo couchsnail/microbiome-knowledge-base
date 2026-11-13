@@ -108,30 +108,42 @@ function openTab(event, tabName)
     console.log("Database tab display:", document.getElementById("view_database").style.display);
 
     let dbTab = document.getElementById("view_database");
-let dbTable = dbTab.querySelector("");
+    let dbTable = dbTab.querySelector("");
 
-let csvTab = document.getElementById("view_csv");
-let csvTable = csvTab.querySelector("micro_table");
+    let csvTab = document.getElementById("view_csv");
+    let csvTable = csvTab.querySelector("micro_table");
 
-let debug = document.getElementById("debug_output");
+    let debug = document.getElementById("debug_output");
 
-if (!debug) {
-    debug = document.createElement("pre");
-    debug.id = "debug_output";
-    document.body.appendChild(debug);
-}
+    if (!debug) {
+        debug = document.createElement("pre");
+        debug.id = "debug_output";
+        document.body.appendChild(debug);
+    }
 
-debug.textContent =
-    "DATABASE TABLE\n" +
-    "Rows: " + dbTable.rows.length +
-    "\nDisplay: " + getComputedStyle(dbTable).display +
-    "\nVisibility: " + getComputedStyle(dbTable).visibility +
-    "\nWidth: " + dbTable.getBoundingClientRect().width +
-    "\n\nCSV TABLE\n" +
-    "Rows: " + csvTable.rows.length +
-    "\nDisplay: " + getComputedStyle(csvTable).display +
-    "\nVisibility: " + getComputedStyle(csvTable).visibility +
-    "\nWidth: " + csvTable.getBoundingClientRect().width;
+    debug.textContent =
+        "DATABASE TABLE\n" +
+        "Rows: " + dbTable.rows.length +
+        "\nDisplay: " + getComputedStyle(dbTable).display +
+        "\nVisibility: " + getComputedStyle(dbTable).visibility +
+        "\nWidth: " + dbTable.getBoundingClientRect().width +
+        "\n\nCSV TABLE\n" +
+        "Rows: " + csvTable.rows.length +
+        "\nDisplay: " + getComputedStyle(csvTable).display +
+        "\nVisibility: " + getComputedStyle(csvTable).visibility +
+        "\nWidth: " + csvTable.getBoundingClientRect().width;
+    
+    console.log("CSV container:", 
+    getComputedStyle(document.getElementById("view_csv")).display);
+
+    console.log("Database container:", 
+    getComputedStyle(document.getElementById("view_database")).display);
+
+    console.log("CSV table:", 
+    getComputedStyle(document.getElementById("micro_table")).display);
+
+    console.log("Database table:", 
+    getComputedStyle(document.getElementById("data_table")).display);
 }
 
 /* This function loads the database */
